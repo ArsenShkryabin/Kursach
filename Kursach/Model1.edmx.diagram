@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="943d41b1a7ef4ed885ab6b532ab47630" Name="Diagram1">
+        <EntityTypeShape EntityType="KursovayaModel.calories" Width="1.5" PointX="3" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.health_metrics" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.nutrition" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.sleep" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.user_conditions" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.user_goals" Width="1.5" PointX="3" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.user_habits" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.users" Width="1.5" PointX="0.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.water_intake" Width="1.5" PointX="3" PointY="23.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="KursovayaModel.workouts" Width="1.5" PointX="3" PointY="26.25" IsExpanded="true" />
+        <AssociationConnector Association="KursovayaModel.FK__calories__user_i__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__health_me__user___4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__nutrition__user___534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__sleep__user_id__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__user_cond__user___5070F446" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__user_goal__user___3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__user_habi__user___4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__water_int__user___47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="KursovayaModel.FK__workouts__user_i__4222D4EF" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -3,10 +3,10 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Kursach.User"
       mc:Ignorable="d" 
       d:DesignHeight="1000" d:DesignWidth="800"
-      Title="Profile">
+      Title="Profile"
+      SizeChanged="Page_SizeChanged">
 
     <Grid>
         <Grid.Background>
@@ -18,73 +18,63 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="Auto" MinWidth="200" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Width="400" Margin="0,20,0,0">
-            <TextBlock Text="Профиль пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"
+        <!-- Основной контент -->
+        <StackPanel Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+            <TextBlock x:Name="ProfileTitle" Text="Профиль пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"
                        HorizontalAlignment="Center" Foreground="#FF37474F" />
 
-            <TextBlock Text="Логин:" FontSize="14"/>
-            <TextBox Name="UsernameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True"/>
+            <TextBlock Text="Логин:" FontSize="14" />
+            <TextBox Name="UsernameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
 
-            <TextBlock Text="Электронная почта:" FontSize="14"/>
-            <TextBox Name="EmailTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True"/>
+            <TextBlock Text="Электронная почта:" FontSize="14" />
+            <TextBox Name="EmailTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
 
             <Button Name="EditButton" Content="Редактировать" Width="400" Height="35"
-                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="EditButton_Click"/>
+                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="EditButton_Click_1" />
 
             <Button Name="LogoutButton" Content="Выход" Width="400" Height="35" 
                     Background="#FFC107" Foreground="White" FontWeight="Bold" Margin="0,10,0,0"
-                    Click="LogoutButton_Click"/>
+                    Click="LogoutButton_Click" />
 
-            <TextBlock Text="Основные показатели:" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"
-                       HorizontalAlignment="Left" Foreground="#FF37474F"/>
+            <TextBlock x:Name="MetricsTitle" Text="Основные показатели:" FontSize="16" FontWeight="Bold" Margin="0,20,0,5"
+                       HorizontalAlignment="Left" Foreground="#FF37474F" />
 
-            <TextBlock Text="Рост (в см):" FontSize="14"/>
-            <TextBox Name="HeightTextBox" Width="400" Height="30" Margin="0,0,0,10" />
+            <TextBlock Text="Рост (в см):" FontSize="14" />
+            <TextBox Name="HeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
 
-            <TextBlock Text="Вес (в кг):" FontSize="14"/>
-            <TextBox Name="WeightTextBox" Width="400" Height="30" Margin="0,0,0,10" />
+            <TextBlock Text="Вес (в кг):" FontSize="14" />
+            <TextBox Name="WeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
 
             <Button Name="CalculateBMIButton" Content="Подсчитать ИМТ" Width="400" Height="35" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalculateBMIButton_Click" Margin="0,5,0,10"/>
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalculateBMIButton_Click" Margin="0,5,0,10" />
 
             <TextBlock Name="BMIResultTextBlock" FontSize="16" Margin="0,5,0,5" 
-                       Foreground="#FF37474F"/>
-
+                       Foreground="#FF37474F" />
         </StackPanel>
 
-
-
-
-        <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="540,234,0,0" Grid.ColumnSpan="2">
+        <!-- Боковая панель с кнопками -->
+        <StackPanel x:Name="SidePanel" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
             <Button Name="CalorieTrackerButton" Content="Перейти к подсчету калорий" Width="180" Height="35"
-
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalorieTrackerButton_Click"  Margin="0,5,0,5"/>
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalorieTrackerButton_Click" Margin="0,5,0,5" />
 
             <Button Name="UserStateButton" Content="Перейти к состоянию пользователя" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="UserStateButton_Click_1"  Margin="0,5,0,0"/>
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="UserStateButton_Click"  Margin="0,5,0,0" />
 
             <Button Name="MyHabitsButton" Content="Мои привычки" Width="180" Height="35"
                     Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MyHabitsButton_Click" 
-                    Margin="0,5,0,5"/>
+                    Margin="0,5,0,5" />
             <Button Name="HistoryButton" Content="Вся история" Width="180" Height="35" 
                     Background="#FF2196F3" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"
-                    Click="HistoryButton_Click"/>
+                    Click="HistoryButton_Click" />
+            <Button Name="SleepTrackerButton" Content="Отслеживание сна" Width="180" Height="35"
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepTrackerButton_Click" 
+                    Margin="0,5,0,5" />
+            <Button Name="NutritionTrackerButton" Content="Отслеживание питания" Width="180" Height="35"
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="NutritionTrackerButton_Click_1" 
+                    Margin="0,5,0,5" />
         </StackPanel>
-
-        <StackPanel/>
-        <DataGrid Name="HealthDataGrid1" AutoGenerateColumns="False" Height="200"
-          CanUserAddRows="False" IsReadOnly="True" Margin="100,481,65,819">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Дата" Binding="{Binding Date}"/>
-                <DataGridTextColumn Header="Рост" Binding="{Binding Height}"/>
-                <DataGridTextColumn Header="Вес" Binding="{Binding Weight}"/>
-                <DataGridTextColumn Header="ИМТ" Binding="{Binding BMI}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <StackPanel Margin="-467,-576,467,576"/>
-
     </Grid>
 </Page>

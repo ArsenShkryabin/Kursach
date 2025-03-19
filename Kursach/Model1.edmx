@@ -1,0 +1,705 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище KursovayaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="calories">
+          <Key>
+            <PropertyRef Name="calorie_id" />
+          </Key>
+          <Property Name="calorie_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="consumed_calories" Type="int" />
+          <Property Name="burned_calories" Type="int" />
+          <Property Name="daily_calorie_norm" Type="int" />
+          <Property Name="recommendations" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="health_metrics">
+          <Key>
+            <PropertyRef Name="metric_id" />
+          </Key>
+          <Property Name="metric_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="heart_rate" Type="int" />
+          <Property Name="blood_pressure" Type="nvarchar" MaxLength="50" />
+          <Property Name="blood_sugar" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="nutrition">
+          <Key>
+            <PropertyRef Name="nutrition_id" />
+          </Key>
+          <Property Name="nutrition_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="product" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="calories" Type="int" />
+          <Property Name="calorie_counting" Type="bit" />
+        </EntityType>
+        <EntityType Name="sleep">
+          <Key>
+            <PropertyRef Name="sleep_id" />
+          </Key>
+          <Property Name="sleep_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="duration" Type="int" />
+          <Property Name="quality" Type="nvarchar" MaxLength="50" />
+          <Property Name="date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="user_conditions">
+          <Key>
+            <PropertyRef Name="condition_id" />
+          </Key>
+          <Property Name="condition_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="physical_condition" Type="nvarchar" MaxLength="100" />
+          <Property Name="mental_condition" Type="nvarchar" MaxLength="100" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="recommendations" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="user_goals">
+          <Key>
+            <PropertyRef Name="goal_id" />
+          </Key>
+          <Property Name="goal_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="goal_type" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="target_weight" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="target_date" Type="date" />
+          <Property Name="description" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="user_habits">
+          <Key>
+            <PropertyRef Name="habit_id" />
+          </Key>
+          <Property Name="habit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="habit" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="nvarchar(max)" />
+          <Property Name="date_added" Type="date" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password_hash" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="weight" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="height" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="is_admin" Type="bit" />
+          <Property Name="is_blocked" Type="bit" />
+        </EntityType>
+        <EntityType Name="water_intake">
+          <Key>
+            <PropertyRef Name="water_id" />
+          </Key>
+          <Property Name="water_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="amount" Type="int" />
+          <Property Name="date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="workouts">
+          <Key>
+            <PropertyRef Name="workout_id" />
+          </Key>
+          <Property Name="workout_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" />
+          <Property Name="workout_type" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="duration" Type="int" />
+          <Property Name="calories_burned" Type="int" />
+          <Property Name="date" Type="date" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__calories__user_i__3F466844">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="calories" Type="Self.calories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="calories">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__health_me__user___4AB81AF0">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="health_metrics" Type="Self.health_metrics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="health_metrics">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__nutrition__user___534D60F1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="nutrition" Type="Self.nutrition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="nutrition">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sleep__user_id__44FF419A">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="sleep" Type="Self.sleep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="sleep">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_cond__user___5070F446">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_conditions" Type="Self.user_conditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_conditions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_goal__user___3C69FB99">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_goals" Type="Self.user_goals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_goals">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_habi__user___4D94879B">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_habits" Type="Self.user_habits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_habits">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__water_int__user___47DBAE45">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="water_intake" Type="Self.water_intake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="water_intake">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__workouts__user_i__4222D4EF">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="workouts" Type="Self.workouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="workouts">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище KursovayaModelContainer">
+          <EntitySet Name="calories" EntityType="Self.calories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="health_metrics" EntityType="Self.health_metrics" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="nutrition" EntityType="Self.nutrition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sleep" EntityType="Self.sleep" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_conditions" EntityType="Self.user_conditions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_goals" EntityType="Self.user_goals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user_habits" EntityType="Self.user_habits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="water_intake" EntityType="Self.water_intake" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="workouts" EntityType="Self.workouts" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__calories__user_i__3F466844" Association="Self.FK__calories__user_i__3F466844">
+            <End Role="users" EntitySet="users" />
+            <End Role="calories" EntitySet="calories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__health_me__user___4AB81AF0" Association="Self.FK__health_me__user___4AB81AF0">
+            <End Role="users" EntitySet="users" />
+            <End Role="health_metrics" EntitySet="health_metrics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__nutrition__user___534D60F1" Association="Self.FK__nutrition__user___534D60F1">
+            <End Role="users" EntitySet="users" />
+            <End Role="nutrition" EntitySet="nutrition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sleep__user_id__44FF419A" Association="Self.FK__sleep__user_id__44FF419A">
+            <End Role="users" EntitySet="users" />
+            <End Role="sleep" EntitySet="sleep" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_cond__user___5070F446" Association="Self.FK__user_cond__user___5070F446">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_conditions" EntitySet="user_conditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_goal__user___3C69FB99" Association="Self.FK__user_goal__user___3C69FB99">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_goals" EntitySet="user_goals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_habi__user___4D94879B" Association="Self.FK__user_habi__user___4D94879B">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_habits" EntitySet="user_habits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__water_int__user___47DBAE45" Association="Self.FK__water_int__user___47DBAE45">
+            <End Role="users" EntitySet="users" />
+            <End Role="water_intake" EntitySet="water_intake" />
+          </AssociationSet>
+          <AssociationSet Name="FK__workouts__user_i__4222D4EF" Association="Self.FK__workouts__user_i__4222D4EF">
+            <End Role="users" EntitySet="users" />
+            <End Role="workouts" EntitySet="workouts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="KursovayaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="calories">
+          <Key>
+            <PropertyRef Name="calorie_id" />
+          </Key>
+          <Property Name="calorie_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="consumed_calories" Type="Int32" />
+          <Property Name="burned_calories" Type="Int32" />
+          <Property Name="daily_calorie_norm" Type="Int32" />
+          <Property Name="recommendations" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users" Relationship="Self.FK__calories__user_i__3F466844" FromRole="calories" ToRole="users" />
+        </EntityType>
+        <EntityType Name="health_metrics">
+          <Key>
+            <PropertyRef Name="metric_id" />
+          </Key>
+          <Property Name="metric_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="heart_rate" Type="Int32" />
+          <Property Name="blood_pressure" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="blood_sugar" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="users" Relationship="Self.FK__health_me__user___4AB81AF0" FromRole="health_metrics" ToRole="users" />
+        </EntityType>
+        <EntityType Name="nutrition">
+          <Key>
+            <PropertyRef Name="nutrition_id" />
+          </Key>
+          <Property Name="nutrition_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="product" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="calories" Type="Int32" />
+          <Property Name="calorie_counting" Type="Boolean" />
+          <NavigationProperty Name="users" Relationship="Self.FK__nutrition__user___534D60F1" FromRole="nutrition" ToRole="users" />
+        </EntityType>
+        <EntityType Name="sleep">
+          <Key>
+            <PropertyRef Name="sleep_id" />
+          </Key>
+          <Property Name="sleep_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="quality" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="users" Relationship="Self.FK__sleep__user_id__44FF419A" FromRole="sleep" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user_conditions">
+          <Key>
+            <PropertyRef Name="condition_id" />
+          </Key>
+          <Property Name="condition_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="physical_condition" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mental_condition" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="recommendations" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users" Relationship="Self.FK__user_cond__user___5070F446" FromRole="user_conditions" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user_goals">
+          <Key>
+            <PropertyRef Name="goal_id" />
+          </Key>
+          <Property Name="goal_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="goal_type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="target_weight" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="target_date" Type="DateTime" Precision="0" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users" Relationship="Self.FK__user_goal__user___3C69FB99" FromRole="user_goals" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user_habits">
+          <Key>
+            <PropertyRef Name="habit_id" />
+          </Key>
+          <Property Name="habit_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="habit" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="date_added" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="user_id" Type="Int32" />
+          <NavigationProperty Name="users" Relationship="Self.FK__user_habi__user___4D94879B" FromRole="user_habits" ToRole="users" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="user_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password_hash" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="weight" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="height" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="is_admin" Type="Boolean" />
+          <NavigationProperty Name="calories" Relationship="Self.FK__calories__user_i__3F466844" FromRole="users" ToRole="calories" />
+          <NavigationProperty Name="health_metrics" Relationship="Self.FK__health_me__user___4AB81AF0" FromRole="users" ToRole="health_metrics" />
+          <NavigationProperty Name="nutrition" Relationship="Self.FK__nutrition__user___534D60F1" FromRole="users" ToRole="nutrition" />
+          <NavigationProperty Name="sleep" Relationship="Self.FK__sleep__user_id__44FF419A" FromRole="users" ToRole="sleep" />
+          <NavigationProperty Name="user_conditions" Relationship="Self.FK__user_cond__user___5070F446" FromRole="users" ToRole="user_conditions" />
+          <NavigationProperty Name="user_goals" Relationship="Self.FK__user_goal__user___3C69FB99" FromRole="users" ToRole="user_goals" />
+          <NavigationProperty Name="user_habits" Relationship="Self.FK__user_habi__user___4D94879B" FromRole="users" ToRole="user_habits" />
+          <NavigationProperty Name="water_intake" Relationship="Self.FK__water_int__user___47DBAE45" FromRole="users" ToRole="water_intake" />
+          <NavigationProperty Name="workouts" Relationship="Self.FK__workouts__user_i__4222D4EF" FromRole="users" ToRole="workouts" />
+          <Property Name="is_blocked" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="water_intake">
+          <Key>
+            <PropertyRef Name="water_id" />
+          </Key>
+          <Property Name="water_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="amount" Type="Int32" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="users" Relationship="Self.FK__water_int__user___47DBAE45" FromRole="water_intake" ToRole="users" />
+        </EntityType>
+        <EntityType Name="workouts">
+          <Key>
+            <PropertyRef Name="workout_id" />
+          </Key>
+          <Property Name="workout_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="workout_type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="duration" Type="Int32" />
+          <Property Name="calories_burned" Type="Int32" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="users" Relationship="Self.FK__workouts__user_i__4222D4EF" FromRole="workouts" ToRole="users" />
+        </EntityType>
+        <Association Name="FK__calories__user_i__3F466844">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="calories" Type="Self.calories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="calories">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__health_me__user___4AB81AF0">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="health_metrics" Type="Self.health_metrics" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="health_metrics">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__nutrition__user___534D60F1">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="nutrition" Type="Self.nutrition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="nutrition">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__sleep__user_id__44FF419A">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="sleep" Type="Self.sleep" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="sleep">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_cond__user___5070F446">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_conditions" Type="Self.user_conditions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_conditions">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_goal__user___3C69FB99">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_goals" Type="Self.user_goals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_goals">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user_habi__user___4D94879B">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="user_habits" Type="Self.user_habits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_habits">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__water_int__user___47DBAE45">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="water_intake" Type="Self.water_intake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="water_intake">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__workouts__user_i__4222D4EF">
+          <End Role="users" Type="Self.users" Multiplicity="0..1" />
+          <End Role="workouts" Type="Self.workouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="workouts">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="KursovayaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="calories" EntityType="Self.calories" />
+          <EntitySet Name="health_metrics" EntityType="Self.health_metrics" />
+          <EntitySet Name="nutrition" EntityType="Self.nutrition" />
+          <EntitySet Name="sleep" EntityType="Self.sleep" />
+          <EntitySet Name="user_conditions" EntityType="Self.user_conditions" />
+          <EntitySet Name="user_goals" EntityType="Self.user_goals" />
+          <EntitySet Name="user_habits" EntityType="Self.user_habits" />
+          <EntitySet Name="users" EntityType="Self.users" />
+          <EntitySet Name="water_intake" EntityType="Self.water_intake" />
+          <EntitySet Name="workouts" EntityType="Self.workouts" />
+          <AssociationSet Name="FK__calories__user_i__3F466844" Association="Self.FK__calories__user_i__3F466844">
+            <End Role="users" EntitySet="users" />
+            <End Role="calories" EntitySet="calories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__health_me__user___4AB81AF0" Association="Self.FK__health_me__user___4AB81AF0">
+            <End Role="users" EntitySet="users" />
+            <End Role="health_metrics" EntitySet="health_metrics" />
+          </AssociationSet>
+          <AssociationSet Name="FK__nutrition__user___534D60F1" Association="Self.FK__nutrition__user___534D60F1">
+            <End Role="users" EntitySet="users" />
+            <End Role="nutrition" EntitySet="nutrition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__sleep__user_id__44FF419A" Association="Self.FK__sleep__user_id__44FF419A">
+            <End Role="users" EntitySet="users" />
+            <End Role="sleep" EntitySet="sleep" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_cond__user___5070F446" Association="Self.FK__user_cond__user___5070F446">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_conditions" EntitySet="user_conditions" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_goal__user___3C69FB99" Association="Self.FK__user_goal__user___3C69FB99">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_goals" EntitySet="user_goals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user_habi__user___4D94879B" Association="Self.FK__user_habi__user___4D94879B">
+            <End Role="users" EntitySet="users" />
+            <End Role="user_habits" EntitySet="user_habits" />
+          </AssociationSet>
+          <AssociationSet Name="FK__water_int__user___47DBAE45" Association="Self.FK__water_int__user___47DBAE45">
+            <End Role="users" EntitySet="users" />
+            <End Role="water_intake" EntitySet="water_intake" />
+          </AssociationSet>
+          <AssociationSet Name="FK__workouts__user_i__4222D4EF" Association="Self.FK__workouts__user_i__4222D4EF">
+            <End Role="users" EntitySet="users" />
+            <End Role="workouts" EntitySet="workouts" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище KursovayaModelContainer" CdmEntityContainer="KursovayaEntities">
+          <EntitySetMapping Name="calories">
+            <EntityTypeMapping TypeName="KursovayaModel.calories">
+              <MappingFragment StoreEntitySet="calories">
+                <ScalarProperty Name="calorie_id" ColumnName="calorie_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="consumed_calories" ColumnName="consumed_calories" />
+                <ScalarProperty Name="burned_calories" ColumnName="burned_calories" />
+                <ScalarProperty Name="daily_calorie_norm" ColumnName="daily_calorie_norm" />
+                <ScalarProperty Name="recommendations" ColumnName="recommendations" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="health_metrics">
+            <EntityTypeMapping TypeName="KursovayaModel.health_metrics">
+              <MappingFragment StoreEntitySet="health_metrics">
+                <ScalarProperty Name="metric_id" ColumnName="metric_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="heart_rate" ColumnName="heart_rate" />
+                <ScalarProperty Name="blood_pressure" ColumnName="blood_pressure" />
+                <ScalarProperty Name="blood_sugar" ColumnName="blood_sugar" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="nutrition">
+            <EntityTypeMapping TypeName="KursovayaModel.nutrition">
+              <MappingFragment StoreEntitySet="nutrition">
+                <ScalarProperty Name="nutrition_id" ColumnName="nutrition_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="product" ColumnName="product" />
+                <ScalarProperty Name="calories" ColumnName="calories" />
+                <ScalarProperty Name="calorie_counting" ColumnName="calorie_counting" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sleep">
+            <EntityTypeMapping TypeName="KursovayaModel.sleep">
+              <MappingFragment StoreEntitySet="sleep">
+                <ScalarProperty Name="sleep_id" ColumnName="sleep_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="quality" ColumnName="quality" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_conditions">
+            <EntityTypeMapping TypeName="KursovayaModel.user_conditions">
+              <MappingFragment StoreEntitySet="user_conditions">
+                <ScalarProperty Name="condition_id" ColumnName="condition_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="physical_condition" ColumnName="physical_condition" />
+                <ScalarProperty Name="mental_condition" ColumnName="mental_condition" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="recommendations" ColumnName="recommendations" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_goals">
+            <EntityTypeMapping TypeName="KursovayaModel.user_goals">
+              <MappingFragment StoreEntitySet="user_goals">
+                <ScalarProperty Name="goal_id" ColumnName="goal_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="goal_type" ColumnName="goal_type" />
+                <ScalarProperty Name="target_weight" ColumnName="target_weight" />
+                <ScalarProperty Name="target_date" ColumnName="target_date" />
+                <ScalarProperty Name="description" ColumnName="description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_habits">
+            <EntityTypeMapping TypeName="KursovayaModel.user_habits">
+              <MappingFragment StoreEntitySet="user_habits">
+                <ScalarProperty Name="habit_id" ColumnName="habit_id" />
+                <ScalarProperty Name="habit" ColumnName="habit" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="date_added" ColumnName="date_added" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="KursovayaModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="is_blocked" ColumnName="is_blocked" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password_hash" ColumnName="password_hash" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="weight" ColumnName="weight" />
+                <ScalarProperty Name="height" ColumnName="height" />
+                <ScalarProperty Name="is_admin" ColumnName="is_admin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="water_intake">
+            <EntityTypeMapping TypeName="KursovayaModel.water_intake">
+              <MappingFragment StoreEntitySet="water_intake">
+                <ScalarProperty Name="water_id" ColumnName="water_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="amount" ColumnName="amount" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="workouts">
+            <EntityTypeMapping TypeName="KursovayaModel.workouts">
+              <MappingFragment StoreEntitySet="workouts">
+                <ScalarProperty Name="workout_id" ColumnName="workout_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="workout_type" ColumnName="workout_type" />
+                <ScalarProperty Name="duration" ColumnName="duration" />
+                <ScalarProperty Name="calories_burned" ColumnName="calories_burned" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

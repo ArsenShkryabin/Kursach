@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Kursach.AdminPages"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
       Title="AdminProfile">
@@ -20,31 +19,26 @@
             <TextBlock Text="Управление пользователями" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"
                        HorizontalAlignment="Center" Foreground="#FF37474F" />
 
-            <!-- Основная информация об администраторе -->
-            <TextBlock Text="Основная информация о администраторе" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"
-                       HorizontalAlignment="Center" Foreground="#FF37474F" />
-
-            <StackPanel Margin="0,0,0,20">
-                <TextBlock Text="Имя: Иван Иванов" FontSize="14" Margin="0,5" HorizontalAlignment="Left" Foreground="#FF37474F"/>
-                <TextBlock Text="Email: admin@example.com" FontSize="14" Margin="0,5" HorizontalAlignment="Left" Foreground="#FF37474F"/>
-                <TextBlock Text="Статус: Активный" FontSize="14" Margin="0,5" HorizontalAlignment="Left" Foreground="#FF37474F"/>
-            </StackPanel>
-
             <DataGrid Name="UsersDataGrid" AutoGenerateColumns="False" Height="300" Margin="0,20,0,20" 
-                      SelectionMode="Single" SelectionUnit="FullRow">
+          SelectionMode="Single" SelectionUnit="FullRow" ItemsSource="{Binding Users}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding UserId}" Width="*"/>
                     <DataGridTextColumn Header="Имя пользователя" Binding="{Binding Username}" Width="*"/>
                     <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
                     <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="*"/>
+                    <DataGridTextColumn Header="Блокировка" Binding="{Binding IsBlocked}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 
+            
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Name="ViewButton" Content="Просмотр" Width="140" Height="35" Margin="0,0,10,0" 
                         Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="ViewButton_Click"/>
-                <Button Name="BanButton" Content="Забанить" Width="140" Height="35" 
+                <Button Name="BanButton" Content="Заблокировать" Width="140" Height="35" 
                         Background="#FFf44336" Foreground="White" FontWeight="Bold" Click="BanButton_Click"/>
+                <Button Name="UnbanButton" Content="Разблокировать" Width="140" Height="35" 
+                        Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Margin="10,0,0,0"
+                        Click="UnbanButton_Click"/>
             </StackPanel>
 
             <TextBlock Name="ActionMessageTextBlock" Text="" Foreground="Red" HorizontalAlignment="Center" 

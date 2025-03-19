@@ -4,10 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Kursach.User"
-      mc:Ignorable="d" d:DesignWidth="800"
-      Title="CondtitionUser" Height="600">
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
+      Title="CondtitionUser">
 
-    <Grid Margin="0,-118,-10,42">
+    <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="#FFB3E5FC" Offset="0.0" />
@@ -15,44 +16,51 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Margin="20">
-            <TextBlock Text="Физическое и моральное состояние" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="400" Margin="0,20,0,0">
+            <TextBlock Text="Состояние пользователя" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"
                        HorizontalAlignment="Center" Foreground="#FF37474F" />
 
             <TextBlock Text="Физическое состояние:" FontSize="14"/>
-            <ComboBox Name="PhysicalStateComboBox" Width="300" Height="30" Margin="0,0,0,10">
-                <ComboBoxItem Content="Отлично"/>
-                <ComboBoxItem Content="Хорошо"/>
-                <ComboBoxItem Content="Удовлетворительно"/>
-                <ComboBoxItem Content="Плохо"/>
-                <ComboBoxItem Content="Очень плохо"/>
+            <ComboBox Name="PhysicalStateComboBox" Width="400" Height="30" Margin="0,0,0,10">
+                <ComboBoxItem Content="Отлично" />
+                <ComboBoxItem Content="Хорошо" />
+                <ComboBoxItem Content="Удовлетворительно" />
+                <ComboBoxItem Content="Плохо" />
             </ComboBox>
 
             <TextBlock Text="Моральное состояние:" FontSize="14"/>
-            <ComboBox Name="MentalStateComboBox" Width="300" Height="30" Margin="0,0,0,10">
-                <ComboBoxItem Content="Счастлив"/>
-                <ComboBoxItem Content="Спокойно"/>
-                <ComboBoxItem Content="Нормально"/>
-                <ComboBoxItem Content="Нервничаю"/>
-                <ComboBoxItem Content="Депрессия"/>
+            <ComboBox Name="MentalStateComboBox" Width="400" Height="30" Margin="0,0,0,10">
+                <ComboBoxItem Content="Счастлив" />
+                <ComboBoxItem Content="Спокойно" />
+                <ComboBoxItem Content="Нервничаю" />
+                <ComboBoxItem Content="Депрессия" />
             </ComboBox>
 
-            <Button Name="EvaluateStateButton" Content="Оценить состояние" Width="300" Height="35" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="EvaluateStateButton_Click"  Margin="0,10,0,10" />
+            <Button Name="EvaluateStateButton" Content="Оценить состояние" Width="400" Height="35"
+                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="EvaluateStateButton_Click"/>
 
-            <Button Name="SaveStateButton" Content="Сохранить состояние" Width="300" Height="35" 
-                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="SaveStateButton_Click" />
+            <Button Name="SaveStateButton" Content="Сохранить состояние" Width="400" Height="35"
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SaveStateButton_Click"/>
 
-            <TextBlock Name="MessageTextBlock" FontSize="14" HorizontalAlignment="Center" 
-                       Foreground="Red" Margin="0,10,0,0"/>
-
-            <TextBlock Text="Изменения состояния за последние несколько дней:" FontSize="16" FontWeight="Bold" 
-                       Margin="0,20,0,5" HorizontalAlignment="Left" Foreground="#FF37474F"/>
-
-            <ScrollViewer Width="300" Height="200">
-                <DataGrid Name="UserStateDataGrid" AutoGenerateColumns="True" 
-                           CanUserAddRows="False" IsReadOnly="True"/>
-            </ScrollViewer>
+            <TextBlock Name="MessageTextBlock" FontSize="16" Margin="0,10,0,5" 
+                       Foreground="#FF37474F"/>
         </StackPanel>
+
+        <!-- Таблица для отображения истории состояний -->
+        <DataGrid Name="UserStateDataGrid" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                  Width="600" Height="200" Margin="0,0,0,20" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
+                <DataGridTextColumn Header="Физическое состояние" Binding="{Binding PhysicalState}" Width="*"/>
+                <DataGridTextColumn Header="Моральное состояние" Binding="{Binding MentalState}" Width="*"/>
+                <DataGridTextColumn Header="Рекомендации" Binding="{Binding Recommendations}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Кнопка для обновления таблицы -->
+        <Button Name="RefreshStateHistoryButton" Content="Обновить историю" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" 
+                Click="RefreshStateHistoryButton_Click"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="540,0,0,20"/>
     </Grid>
 </Page>
