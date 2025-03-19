@@ -1,88 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Objects;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Kursach.Class;
 
 namespace Kursach.User
 {
     public partial class UsersCalories : Page
     {
-        private List<CalorieRecord> calorieRecords; // Список для хранения истории калорий
+        private KursovayaEntities context = new KursovayaEntities();
+        private int _userId; // ID текущего пользователя
 
-        public UsersCalories()
+        public UsersCalories(int userId)
         {
             InitializeComponent();
-            calorieRecords = new List<CalorieRecord>(); // Инициализация списка
-            CaloriesHistoryDataGrid.ItemsSource = calorieRecords; // Задаем источник данных для DataGrid
+            _userId = userId;
+            LoadDailyCalorieGoal();
+            LoadDataForToday(); // Загрузка данных за сегодняшний день
         }
 
+        // Загрузка дневной нормы калорий
+        private void LoadDailyCalorieGoal()
+        {
+            var user = context.users.FirstOrDefault(u => u.user_id == _userId);
+            if (user != null)
+            {
+                // Проверяем, указан ли вес
+                if (user.weight.HasValue)
+                {
+                    // Пример расчета нормы калорий на основе веса
+                    double dailyCalories = Convert.ToDouble(user.weight.Value) * 30;
+                    DailyCalorieGoalTextBox.Text = dailyCalories.ToString("F2");
+                }
+                else
+                {
+                    // Если вес не указан, устанавливаем значение по умолчанию
+                    DailyCalorieGoalTextBox.Text = "0";
+                }
+            }
+        }
+
+        // Загрузка данных за выбранную дату
+        private void LoadDataForDate(DateTime selectedDate)
+        {
+            var nutritionEntries = context.nutrition
+       .Where(n => n.user_id == _userId && n.date.HasValue && EntityFunctions.TruncateTime(n.date) == selectedDate.Date)
+       .ToList();
+
+            // Сумма всех калорий за день
+            double totalCaloriesConsumed = nutritionEntries.Sum(n => n.calories ?? 0);
+            TotalCaloriesConsumedTextBox.Text = totalCaloriesConsumed.ToString("F2");
+
+            // Отображение истории калорий
+            CaloriesHistoryDataGrid.ItemsSource = nutritionEntries;
+        }
+
+        // Загрузка данных за сегодняшний день
+        private void LoadDataForToday()
+        {
+            LoadDataForDate(DateTime.Today);
+        }
+
+        // Обработчик выбора даты
+        private void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedDate = DatePicker.SelectedDate;
+            if (selectedDate.HasValue)
+            {
+                LoadDataForDate(selectedDate.Value);
+            }
+        }
+
+        // Обработчик сохранения шагов
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(CaloriesConsumedTextBox.Text, out int consumed) &&
-                int.TryParse(CaloriesBurnedTextBox.Text, out int burned) &&
-                int.TryParse(DailyCalorieGoalTextBox.Text, out int dailyGoal))
+            if (int.TryParse(StepsTextBox.Text, out int steps))
             {
-                // Сравнение с дневной нормой и формирование рекомендации
-                string recommendation = GetCalorieRecommendation(consumed, burned, dailyGoal);
+                double caloriesBurned = CalculateCaloriesBurned(steps);
+                CaloriesBurnedTextBox.Text = caloriesBurned.ToString("F2");
 
-                // Создаем новую запись
-                var record = new CalorieRecord
+                // Рассчет избытка/недостатка калорий
+                double totalCaloriesConsumed = double.Parse(TotalCaloriesConsumedTextBox.Text);
+                double dailyCalorieGoal = double.Parse(DailyCalorieGoalTextBox.Text);
+                double calorieDifference = totalCaloriesConsumed - dailyCalorieGoal - caloriesBurned;
+
+                CalorieDifferenceTextBox.Text = calorieDifference.ToString("F2");
+
+                // Рекомендации
+                if (calorieDifference > 0)
                 {
-                    Date = DateTime.Now,
-                    CaloriesConsumed = consumed,
-                    CaloriesBurned = burned,
-                    DailyGoal = dailyGoal,
-                    Recommendation = recommendation
-                };
-
-                // Добавляем запись в историю
-                calorieRecords.Add(record);
-
-                // Обновляем таблицу
-                CaloriesHistoryDataGrid.ItemsSource = null; // Обновляем источник
-                CaloriesHistoryDataGrid.ItemsSource = calorieRecords; // Устанавливаем новый источник
-
-                // Отображаем сообщение
-                MessageTextBlock.Text = recommendation;
-                ClearInputs(); // Очищаем поля ввода
+                    RecommendationsTextBox.Text = "Вы употребили больше калорий, чем нужно. Уменьшите потребление.";
+                }
+                else if (calorieDifference < 0)
+                {
+                    RecommendationsTextBox.Text = "Вы употребили меньше калорий, чем нужно. Увеличьте потребление.";
+                }
+                else
+                {
+                    RecommendationsTextBox.Text = "Ваше питание сбалансировано. Продолжайте в том же духе!";
+                }
             }
             else
             {
-                MessageTextBlock.Text = "Пожалуйста, введите корректные значения.";
+                MessageBox.Show("Введите корректное количество шагов.");
             }
         }
 
-        private string GetCalorieRecommendation(int consumed, int burned, int dailyGoal)
+        // Рассчет сожженных калорий на основе шагов
+        private double CalculateCaloriesBurned(int steps)
         {
-            int netCalories = consumed - burned;
-            if (netCalories > dailyGoal)
-            {
-                return "Вы превысили дневную норму калорий. Рекомендуется уменьшить потребление.";
-            }
-            else if (netCalories < dailyGoal)
-            {
-                return "Вы не достигли своей дневной нормы калорий. Подумайте о добавлении дополнительных приемов пищи.";
-            }
-            else
-            {
-                return "Вы точно попали в свою дневную норму калорий!";
-            }
+            // Пример: 0.05 калорий на шаг
+            return steps * 0.05;
         }
-
-        private void ClearInputs()
-        {
-            CaloriesConsumedTextBox.Clear();
-            CaloriesBurnedTextBox.Clear();
-            DailyCalorieGoalTextBox.Clear();
-        }
-    }
-
-    public class CalorieRecord
-    {
-        public DateTime Date { get; set; }
-        public int CaloriesConsumed { get; set; }
-        public int CaloriesBurned { get; set; }
-        public int DailyGoal { get; set; }
-        public string Recommendation { get; set; }
     }
 }

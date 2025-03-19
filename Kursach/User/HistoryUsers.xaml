@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Kursach.User"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="HistoryUsers">
+      d:DesignHeight="650" d:DesignWidth="800"
+      Title="История">
 
     <Grid>
         <Grid.Background>
@@ -16,16 +16,109 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Margin="20">
-            <TextBlock Text="Выберите таблицу для просмотра" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" 
-                       HorizontalAlignment="Center" Foreground="#FF37474F"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-            <RadioButton Name="CaloriesRadioButton" Content="История калорий" GroupName="HistoryGroup" Margin="0,5" Checked="CaloriesRadioButton_Checked"/>
-            <RadioButton Name="StateRadioButton" Content="История состояния" GroupName="HistoryGroup" Margin="0,5" Checked="StateRadioButton_Checked"/>
-            <RadioButton Name="HabitsRadioButton" Content="История привычек" GroupName="HistoryGroup" Margin="0,5" Checked="HabitsRadioButton_Checked"/>
+        <!-- Выбор таблицы -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+            <TextBlock Text="Выберите таблицу для просмотра" FontSize="20" FontWeight="Bold" 
+                       HorizontalAlignment="Center" Foreground="#FF37474F" Margin="0,0,0,10" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+                <RadioButton Name="CaloriesRadioButton" Content="История калорий" GroupName="HistoryGroup" 
+                             Margin="5" Checked="CaloriesRadioButton_Checked" Style="{StaticResource {x:Type RadioButton}}" />
+                <RadioButton Name="StateRadioButton" Content="История состояния" GroupName="HistoryGroup" 
+                             Margin="5" Checked="StateRadioButton_Checked" />
+                <RadioButton Name="HabitsRadioButton" Content="История привычек" GroupName="HistoryGroup" 
+                             Margin="5" Checked="HabitsRadioButton_Checked" />
+            </StackPanel>
 
             <Button Name="ViewButton" Content="Просмотреть" Width="200" Height="35" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="ViewButton_Click" Margin="0,20,0,0"/>
+                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="ViewButton_Click" Margin="0,10,0,0"/>
         </StackPanel>
+
+        <!-- Таблицы -->
+        <Grid Grid.Row="1" Margin="10">
+            <StackPanel>
+                <!-- Таблица калорий -->
+                <DataGrid Name="CaloriesDataGrid" AutoGenerateColumns="False" Visibility="Collapsed" 
+                          Width="700" Height="300" Margin="0,10,0,10"
+                          Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                          RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                          BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#FF2196F3"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding date}" Width="*"/>
+                        <DataGridTextColumn Header="Продукт" Binding="{Binding product}" Width="*"/>
+                        <DataGridTextColumn Header="Калории" Binding="{Binding calories}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Таблица состояния -->
+                <DataGrid Name="StateDataGrid" AutoGenerateColumns="False" Visibility="Collapsed" 
+                          Width="700" Height="300" Margin="0,10,0,10"
+                          Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                          RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                          BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#FF2196F3"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding date}" Width="*"/>
+                        <DataGridTextColumn Header="Состояние" Binding="{Binding state}" Width="*"/>
+                        <DataGridTextColumn Header="Комментарий" Binding="{Binding comment}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Таблица привычек -->
+                <DataGrid Name="HabitsDataGrid" AutoGenerateColumns="False" Visibility="Collapsed" 
+                          Width="700" Height="300" Margin="0,10,0,10"
+                          Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                          RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                          BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#FF2196F3"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding date}" Width="*"/>
+                        <DataGridTextColumn Header="Привычка" Binding="{Binding name}" Width="*"/>
+                        <DataGridTextColumn Header="Описание" Binding="{Binding description}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Grid>
+
+        <!-- Рекомендации -->
+        <Border Grid.Row="2" Background="#FFE3F2FD" CornerRadius="10" Margin="10,20,10,10" Padding="10">
+            <StackPanel>
+                <TextBlock Text="Рекомендации по изменениям" FontSize="16" FontWeight="Bold" 
+                           Foreground="#FF37474F" Margin="0,0,0,10" />
+                <TextBlock Name="RecommendationTextBlock" FontSize="14" Foreground="#FF37474F" 
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

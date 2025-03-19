@@ -24,6 +24,10 @@
         <AssociationConnector Association="KursovayaModel.FK__user_habi__user___4D94879B" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__water_int__user___47DBAE45" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__workouts__user_i__4222D4EF" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="KursovayaModel.habits" Width="1.5" PointX="3" PointY="29.625" />
+        <AssociationConnector Association="KursovayaModel.FK__habits__user_id__5812160E" />
+        <EntityTypeShape EntityType="KursovayaModel.Goals" Width="1.5" PointX="3" PointY="32.625" />
+        <AssociationConnector Association="KursovayaModel.FK__Goals__UserId__5FB337D6" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

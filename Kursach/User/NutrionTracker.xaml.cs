@@ -24,7 +24,7 @@ namespace Kursach.User
             try
             {
                 var entries = _context.nutrition
-                    .Where(n => n.user_id == _userId)
+                    .Where(n => n.user_id == _userId) // Фильтр по user_id
                     .OrderByDescending(n => n.nutrition_id)
                     .ToList();
 
@@ -51,6 +51,12 @@ namespace Kursach.User
                 return;
             }
 
+            if (DatePicker.SelectedDate == null)
+            {
+                MessageBox.Show("Выберите дату.");
+                return;
+            }
+
             try
             {
                 var newEntry = new nutrition
@@ -58,8 +64,8 @@ namespace Kursach.User
                     user_id = _userId,
                     product = ProductTextBox.Text,
                     calories = calories,
-                    calorie_counting = true, // Указываем, что калории учитываются
-                    
+                    date = DatePicker.SelectedDate.Value, // Сохраняем выбранную дату
+                    calorie_counting = true // Указываем, что калории учитываются
                 };
 
                 _context.nutrition.Add(newEntry);

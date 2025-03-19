@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Kursach.User"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="HabbitPage">
+      Title="Управление привычками">
 
     <Grid>
         <Grid.Background>
@@ -31,11 +31,24 @@
             <Button Name="AddHabitButton" Content="Добавить привычку" Width="500" Height="35" Margin="0,10,0,0" 
                     Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="AddHabitButton_Click"/>
 
-            <DataGrid Name="HabitsDataGrid" AutoGenerateColumns="False" Height="200" Margin="0,20,0,10" 
-                      SelectionMode="Single" SelectionUnit="FullRow">
+            <!-- Таблица привычек -->
+            <DataGrid Name="HabitsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                      Width="500" Height="200" Margin="0,10,0,10"
+                      Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                      RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                      BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#FF2196F3"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Привычка" Binding="{Binding Habit}" Width="*"/>
-                    <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+                    <DataGridTextColumn Header="Название" Binding="{Binding name}" Width="*"/>
+                    <DataGridTextColumn Header="Описание" Binding="{Binding description}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
 

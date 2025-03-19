@@ -73,6 +73,12 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Class\CurrentUser.cs" />
+    <Compile Include="Goals.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="habits.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="health_metrics.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -103,6 +109,9 @@
     </Compile>
     <Compile Include="User\CondtitionUser.xaml.cs">
       <DependentUpon>CondtitionUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="User\GoalsPage.xaml.cs">
+      <DependentUpon>GoalsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="User\HabbitPage.xaml.cs">
       <DependentUpon>HabbitPage.xaml</DependentUpon>
@@ -172,6 +181,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="User\CondtitionUser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="User\GoalsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -248,6 +261,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Resource Include="Photo\icons8-саквояж-врача-64.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

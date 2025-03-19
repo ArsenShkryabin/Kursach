@@ -17,6 +17,25 @@
           <Property Name="daily_calorie_norm" Type="int" />
           <Property Name="recommendations" Type="nvarchar(max)" />
         </EntityType>
+        <EntityType Name="Goals">
+          <Key>
+            <PropertyRef Name="GoalId" />
+          </Key>
+          <Property Name="GoalId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsCompleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="habits">
+          <Key>
+            <PropertyRef Name="habit_id" />
+          </Key>
+          <Property Name="habit_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="255" />
+        </EntityType>
         <EntityType Name="health_metrics">
           <Key>
             <PropertyRef Name="metric_id" />
@@ -37,6 +56,7 @@
           <Property Name="product" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="calories" Type="int" />
           <Property Name="calorie_counting" Type="bit" />
+          <Property Name="date" Type="date" />
         </EntityType>
         <EntityType Name="sleep">
           <Key>
@@ -121,6 +141,30 @@
               <PropertyRef Name="user_id" />
             </Principal>
             <Dependent Role="calories">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Goals__UserId__5FB337D6">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="Goals" Type="Self.Goals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Goals">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__habits__user_id__5812160E">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="habits" Type="Self.habits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="habits">
               <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -223,6 +267,8 @@
         </Association>
         <EntityContainer Name="Хранилище KursovayaModelContainer">
           <EntitySet Name="calories" EntityType="Self.calories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Goals" EntityType="Self.Goals" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="habits" EntityType="Self.habits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="health_metrics" EntityType="Self.health_metrics" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="nutrition" EntityType="Self.nutrition" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sleep" EntityType="Self.sleep" Schema="dbo" store:Type="Tables" />
@@ -235,6 +281,14 @@
           <AssociationSet Name="FK__calories__user_i__3F466844" Association="Self.FK__calories__user_i__3F466844">
             <End Role="users" EntitySet="users" />
             <End Role="calories" EntitySet="calories" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Goals__UserId__5FB337D6" Association="Self.FK__Goals__UserId__5FB337D6">
+            <End Role="users" EntitySet="users" />
+            <End Role="Goals" EntitySet="Goals" />
+          </AssociationSet>
+          <AssociationSet Name="FK__habits__user_id__5812160E" Association="Self.FK__habits__user_id__5812160E">
+            <End Role="users" EntitySet="users" />
+            <End Role="habits" EntitySet="habits" />
           </AssociationSet>
           <AssociationSet Name="FK__health_me__user___4AB81AF0" Association="Self.FK__health_me__user___4AB81AF0">
             <End Role="users" EntitySet="users" />
@@ -308,6 +362,7 @@
           <Property Name="calories" Type="Int32" />
           <Property Name="calorie_counting" Type="Boolean" />
           <NavigationProperty Name="users" Relationship="Self.FK__nutrition__user___534D60F1" FromRole="nutrition" ToRole="users" />
+          <Property Name="date" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="sleep">
           <Key>
@@ -376,6 +431,8 @@
           <NavigationProperty Name="water_intake" Relationship="Self.FK__water_int__user___47DBAE45" FromRole="users" ToRole="water_intake" />
           <NavigationProperty Name="workouts" Relationship="Self.FK__workouts__user_i__4222D4EF" FromRole="users" ToRole="workouts" />
           <Property Name="is_blocked" Type="Boolean" />
+          <NavigationProperty Name="habits" Relationship="KursovayaModel.FK__habits__user_id__5812160E" FromRole="users" ToRole="habits" />
+          <NavigationProperty Name="Goals" Relationship="KursovayaModel.FK__Goals__UserId__5FB337D6" FromRole="users" ToRole="Goals" />
         </EntityType>
         <EntityType Name="water_intake">
           <Key>
@@ -554,7 +611,62 @@
             <End Role="users" EntitySet="users" />
             <End Role="workouts" EntitySet="workouts" />
           </AssociationSet>
+          <EntitySet Name="habits" EntityType="KursovayaModel.habits" />
+          <AssociationSet Name="FK__habits__user_id__5812160E" Association="KursovayaModel.FK__habits__user_id__5812160E">
+            <End Role="users" EntitySet="users" />
+            <End Role="habits" EntitySet="habits" />
+          </AssociationSet>
+          <EntitySet Name="Goals" EntityType="KursovayaModel.Goals" />
+          <AssociationSet Name="FK__Goals__UserId__5FB337D6" Association="KursovayaModel.FK__Goals__UserId__5FB337D6">
+            <End Role="users" EntitySet="users" />
+            <End Role="Goals" EntitySet="Goals" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="habits">
+          <Key>
+            <PropertyRef Name="habit_id" />
+          </Key>
+          <Property Name="habit_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="users" Relationship="KursovayaModel.FK__habits__user_id__5812160E" FromRole="habits" ToRole="users" />
+        </EntityType>
+        <Association Name="FK__habits__user_id__5812160E">
+          <End Type="KursovayaModel.users" Role="users" Multiplicity="1" />
+          <End Type="KursovayaModel.habits" Role="habits" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="habits">
+              <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Goals">
+          <Key>
+            <PropertyRef Name="GoalId" />
+          </Key>
+          <Property Name="GoalId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="users" Relationship="KursovayaModel.FK__Goals__UserId__5FB337D6" FromRole="Goals" ToRole="users" />
+        </EntityType>
+        <Association Name="FK__Goals__UserId__5FB337D6">
+          <End Type="KursovayaModel.users" Role="users" Multiplicity="1" />
+          <End Type="KursovayaModel.Goals" Role="Goals" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="Goals">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -589,6 +701,7 @@
           <EntitySetMapping Name="nutrition">
             <EntityTypeMapping TypeName="KursovayaModel.nutrition">
               <MappingFragment StoreEntitySet="nutrition">
+                <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="nutrition_id" ColumnName="nutrition_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
                 <ScalarProperty Name="product" ColumnName="product" />
@@ -676,6 +789,27 @@
                 <ScalarProperty Name="duration" ColumnName="duration" />
                 <ScalarProperty Name="calories_burned" ColumnName="calories_burned" />
                 <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="habits">
+            <EntityTypeMapping TypeName="KursovayaModel.habits">
+              <MappingFragment StoreEntitySet="habits">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="habit_id" ColumnName="habit_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Goals">
+            <EntityTypeMapping TypeName="KursovayaModel.Goals">
+              <MappingFragment StoreEntitySet="Goals">
+                <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="GoalId" ColumnName="GoalId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

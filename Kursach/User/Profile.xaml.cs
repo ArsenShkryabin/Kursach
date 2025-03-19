@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -105,30 +106,34 @@ namespace Kursach.User
         private void CalorieTrackerButton_Click(object sender, RoutedEventArgs e)
         {
             // Логика перехода к подсчету калорий
-            NavigationService.Navigate(new UsersCalories());
+            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
+            UsersCalories usersCalories = new UsersCalories(userId); // Передаем userId
+            NavigationService.Navigate(usersCalories);
         }
 
-        private void UserStateButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new CondtitionUser());
-        }
+        
 
         private void MyHabigsButton_Click(object sender, RoutedEventArgs e)
         {
             // Логика перехода к привычкам
-            NavigationService.Navigate(new HabbitPage());
+            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
+            HabbitPage habbitpage = new HabbitPage(userId); // Передаем userId
+            NavigationService.Navigate(habbitpage);
         }
 
         private void HistoryButton_Click(object sender, RoutedEventArgs e)
         {
             // Логика перехода к истории
-            NavigationService.Navigate(new HistoryUsers());
+            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
+            HistoryUsers historyUsers = new HistoryUsers(userId); // Передаем userId
+            NavigationService.Navigate(historyUsers);
         }
 
         private void MyHabitsButton_Click(object sender, RoutedEventArgs e)
         {
-            // Логика перехода к привычкам
-            NavigationService.Navigate(new HabbitPage());
+            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
+            HabbitPage habbitpage = new HabbitPage(userId); // Передаем userId
+            NavigationService.Navigate(habbitpage);
         }
 
         private void SleepTrackerButton_Click(object sender, RoutedEventArgs e)
@@ -160,12 +165,40 @@ namespace Kursach.User
 
         private void EditButton_Click_1(object sender, RoutedEventArgs e)
         {
-            EditProfile();
+            
         }
 
         private void UserStateButton_Click(object sender, RoutedEventArgs e)
         {
+            int userId = App.CurrentUser.user_id; // Получаем ID текущего пользователя
+            CondtitionUser condititionuser = new CondtitionUser(userId);
+            NavigationService.Navigate(condititionuser);
+        }
+        private void SleepRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.sleepfoundation.org/"); // Сайт с рекомендациями по сну
+        }
 
+        private void NutritionRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.healthline.com/nutrition"); // Сайт с рекомендациями по питанию
+        }
+
+        private void FitnessRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.webmd.com/fitness-exercise/"); // Сайт с рекомендациями по фитнесу
+        }
+
+        private void MentalHealthRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://www.mentalhealth.gov/"); // Сайт с рекомендациями по здоровью
+        }
+
+        private void GoalsButton_Click(object sender, RoutedEventArgs e)
+        {
+            int userId = App.CurrentUser.user_id; // Получаем ID текущего пользователя
+            GoalsPage goalsPage =  new GoalsPage(userId);
+            NavigationService.Navigate(goalsPage);
         }
     }
 }

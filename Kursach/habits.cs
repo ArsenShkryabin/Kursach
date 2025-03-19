@@ -12,14 +12,12 @@ namespace Kursach
     using System;
     using System.Collections.Generic;
     
-    public partial class nutrition
+    public partial class habits
     {
-        public int nutrition_id { get; set; }
-        public Nullable<int> user_id { get; set; }
-        public string product { get; set; }
-        public Nullable<int> calories { get; set; }
-        public Nullable<bool> calorie_counting { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
+        public int habit_id { get; set; }
+        public int user_id { get; set; }
+        public string name { get; set; }
+        public string description { get; set; }
     
         public virtual users users { get; set; }
     }

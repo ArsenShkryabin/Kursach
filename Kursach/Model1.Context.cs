@@ -35,5 +35,7 @@ namespace Kursach
         public DbSet<users> users { get; set; }
         public DbSet<water_intake> water_intake { get; set; }
         public DbSet<workouts> workouts { get; set; }
+        public DbSet<habits> habits { get; set; }
+        public DbSet<Goals> Goals { get; set; }
     }
 }

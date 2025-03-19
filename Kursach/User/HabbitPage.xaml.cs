@@ -1,60 +1,97 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Kursach.User
 {
-    // Класс для представления привычки
-    public class Habit
-    {
-        public string Name { get; set; } // Название привычки
-        public string Description { get; set; } // Описание привычки
-    }
-
     public partial class HabbitPage : Page
     {
-        private List<Habit> habits; // Поле для хранения списка привычек
+        private KursovayaEntities _context = new KursovayaEntities(); // Контекст базы данных
+        private int _userId; // ID текущего пользователя
 
-        public HabbitPage()
+        public HabbitPage(int userId)
         {
             InitializeComponent();
-            habits = new List<Habit>(); // Инициализация списка привычек
-            HabitsDataGrid.ItemsSource = habits; // Установка источника данных для DataGrid
+            _userId = userId;
+            LoadHabits(); // Загружаем привычки из базы данных
         }
 
-        // Метод для обработки нажатия кнопки "Добавить привычку"
+        // Метод для загрузки привычек из базы данных
+        private void LoadHabits()
+        {
+            try
+            {
+                var habits = _context.habits
+                    .Where(h => h.user_id == _userId)
+                    .ToList();
+
+                HabitsDataGrid.ItemsSource = habits; // Устанавливаем источник данных для DataGrid
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке данных: " + ex.Message);
+            }
+        }
+
+        // Метод для добавления привычки
         private void AddHabitButton_Click(object sender, RoutedEventArgs e)
         {
             string habitName = HabitTextBox.Text;
             string description = DescriptionTextBox.Text;
 
-            // Проверка, не пустые ли поля
             if (!string.IsNullOrWhiteSpace(habitName) && !string.IsNullOrWhiteSpace(description))
             {
-                habits.Add(new Habit { Name = habitName, Description = description }); // Добавляем новую привычку
-                HabitsDataGrid.Items.Refresh(); // Обновляем DataGrid для отображения новой привычки
-                HabitTextBox.Clear(); // Очищаем текстовое поле для привычки
-                DescriptionTextBox.Clear(); // Очищаем текстовое поле для описания
-                ActionMessageTextBlock.Text = "Привычка добавлена."; // Отображаем сообщение о добавлении
+                try
+                {
+                    var newHabit = new habits
+                    {
+                        user_id = _userId,
+                        name = habitName,
+                        description = description
+                    };
+
+                    _context.habits.Add(newHabit); // Добавляем привычку в контекст
+                    _context.SaveChanges(); // Сохраняем изменения в базе данных
+                    LoadHabits(); // Перезагружаем список привычек
+
+                    HabitTextBox.Clear();
+                    DescriptionTextBox.Clear();
+                    ActionMessageTextBlock.Text = "Привычка добавлена.";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при добавлении привычки: " + ex.Message);
+                }
             }
             else
             {
-                ActionMessageTextBlock.Text = "Пожалуйста, заполните все поля."; // Сообщение об ошибке
+                ActionMessageTextBlock.Text = "Пожалуйста, заполните все поля.";
             }
         }
 
-        // Метод для обработки нажатия кнопки "Удалить привычку"
+        // Метод для удаления привычки
         private void RemoveHabitButton_Click(object sender, RoutedEventArgs e)
         {
-            if (HabitsDataGrid.SelectedItem is Habit selectedHabit) // Проверяем, выбрана ли привычка
+            if (HabitsDataGrid.SelectedItem is habits selectedHabbit)
             {
-                habits.Remove(selectedHabit); // Удаляем выбранную привычку
-                HabitsDataGrid.Items.Refresh(); // Обновляем DataGrid для отображения изменений
-                ActionMessageTextBlock.Text = $"Привычка '{selectedHabit.Name}' удалена."; // Отображаем сообщение о удалении
+                try
+                {
+                    _context.habits.Remove(selectedHabbit); // Удаляем привычку из контекста
+                    _context.SaveChanges(); // Сохраняем изменения в базе данных
+                    LoadHabits(); // Перезагружаем список привычек
+
+                    ActionMessageTextBlock.Text = $"Привычка '{selectedHabbit.name}' удалена.";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка при удалении привычки: " + ex.Message);
+                }
             }
             else
             {
-                ActionMessageTextBlock.Text = "Пожалуйста, выберите привычку для удаления."; // Сообщение об ошибке
+                ActionMessageTextBlock.Text = "Пожалуйста, выберите привычку для удаления.";
             }
         }
     }

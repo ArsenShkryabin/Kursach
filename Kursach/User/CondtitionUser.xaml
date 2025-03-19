@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Kursach.User"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="800"
-      Title="CondtitionUser">
+      Title="Состояние пользователя">
 
     <Grid>
         <Grid.Background>
@@ -48,7 +48,19 @@
 
         <!-- Таблица для отображения истории состояний -->
         <DataGrid Name="UserStateDataGrid" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
-                  Width="600" Height="200" Margin="0,0,0,20" AutoGenerateColumns="False">
+                  Width="600" Height="200" Margin="0,0,0,20" AutoGenerateColumns="False"
+                  Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                  RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                  BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#FF2196F3"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Padding" Value="10"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
                 <DataGridTextColumn Header="Физическое состояние" Binding="{Binding PhysicalState}" Width="*"/>

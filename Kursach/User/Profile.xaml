@@ -55,26 +55,64 @@
                        Foreground="#FF37474F" />
         </StackPanel>
 
-        <!-- Боковая панель с кнопками -->
-        <StackPanel x:Name="SidePanel" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
-            <Button Name="CalorieTrackerButton" Content="Перейти к подсчету калорий" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalorieTrackerButton_Click" Margin="0,5,0,5" />
+        <!-- Боковая панель с выпадающими списками -->
+        <StackPanel x:Name="SidePanel" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,0,0,0">
+            <!-- Навигация -->
+            <!-- Навигация -->
+            <Expander Header="Навигация" Background="#FF2196F3" Foreground="White" FontWeight="Bold" Width="180" Margin="0,5,0,5">
+                <StackPanel>
+                    <Button Name="CalorieTrackerButton" Content="Подсчет калорий" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalorieTrackerButton_Click" 
+                Margin="0,5,0,5" />
 
-            <Button Name="UserStateButton" Content="Перейти к состоянию пользователя" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="UserStateButton_Click"  Margin="0,5,0,0" />
+                    <Button Name="UserStateButton" Content="Состояние пользователя" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="UserStateButton_Click" 
+                Margin="0,5,0,5" />
 
-            <Button Name="MyHabitsButton" Content="Мои привычки" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MyHabitsButton_Click" 
-                    Margin="0,5,0,5" />
-            <Button Name="HistoryButton" Content="Вся история" Width="180" Height="35" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Margin="0,5,0,0"
-                    Click="HistoryButton_Click" />
-            <Button Name="SleepTrackerButton" Content="Отслеживание сна" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepTrackerButton_Click" 
-                    Margin="0,5,0,5" />
-            <Button Name="NutritionTrackerButton" Content="Отслеживание питания" Width="180" Height="35"
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="NutritionTrackerButton_Click_1" 
-                    Margin="0,5,0,5" />
+                    <Button Name="MyHabitsButton" Content="Мои привычки" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MyHabitsButton_Click" 
+                Margin="0,5,0,5" />
+
+                    <Button Name="HistoryButton" Content="Вся история" Width="180" Height="35" 
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Margin="0,5,0,5"
+                Click="HistoryButton_Click" />
+
+                    <Button Name="SleepTrackerButton" Content="Сон" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepTrackerButton_Click" 
+                Margin="0,5,0,5" />
+
+                    <Button Name="NutritionTrackerButton" Content="Питание" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="NutritionTrackerButton_Click_1" 
+                Margin="0,5,0,5" />
+
+                    <!-- Новая кнопка "Цели" -->
+                    <Button Name="GoalsButton" Content="Цели" Width="180" Height="35"
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="GoalsButton_Click"
+                Margin="0,5,0,5" />
+                </StackPanel>
+            </Expander>
+
+
+            <!-- Рекомендации -->
+            <Expander Header="Рекомендации" Background="#FF2196F3" Foreground="White" FontWeight="Bold" Width="180" Margin="0,5,0,5">
+                <StackPanel>
+                    <Button Name="SleepRecommendationsButton" Content="Рекомендации по сну" Width="180" Height="35"
+                            Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepRecommendationsButton_Click" 
+                            Margin="0,5,0,5" />
+
+                    <Button Name="NutritionRecommendationsButton" Content="Рекомендации по питанию" Width="180" Height="35"
+                            Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="NutritionRecommendationsButton_Click" 
+                            Margin="0,5,0,5" />
+
+                    <Button Name="FitnessRecommendationsButton" Content="Рекомендации по фитнесу" Width="180" Height="35"
+                            Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="FitnessRecommendationsButton_Click" 
+                            Margin="0,5,0,5" />
+
+                    <Button Name="MentalHealthRecommendationsButton" Content="Рекомендации по здоровью" Width="180" Height="35"
+                            Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MentalHealthRecommendationsButton_Click" 
+                            Margin="0,5,0,5" />
+                </StackPanel>
+            </Expander>
         </StackPanel>
     </Grid>
 </Page>

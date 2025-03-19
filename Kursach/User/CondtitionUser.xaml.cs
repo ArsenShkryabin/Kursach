@@ -10,7 +10,7 @@ namespace Kursach.User
     {
         private KursovayaEntities context;
 
-        public CondtitionUser()
+        public CondtitionUser(int userId)
         {
             InitializeComponent();
             context = new KursovayaEntities();

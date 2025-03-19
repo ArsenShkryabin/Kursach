@@ -25,6 +25,8 @@ namespace Kursach
             this.user_habits = new HashSet<user_habits>();
             this.water_intake = new HashSet<water_intake>();
             this.workouts = new HashSet<workouts>();
+            this.habits = new HashSet<habits>();
+            this.Goals = new HashSet<Goals>();
         }
     
         public int user_id { get; set; }
@@ -45,5 +47,7 @@ namespace Kursach
         public virtual ICollection<user_habits> user_habits { get; set; }
         public virtual ICollection<water_intake> water_intake { get; set; }
         public virtual ICollection<workouts> workouts { get; set; }
+        public virtual ICollection<habits> habits { get; set; }
+        public virtual ICollection<Goals> Goals { get; set; }
     }
 }

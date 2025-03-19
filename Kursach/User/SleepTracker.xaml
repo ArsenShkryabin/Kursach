@@ -19,14 +19,16 @@
             <TextBlock Text="Отслеживание сна" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"
                        HorizontalAlignment="Center" Foreground="#FF37474F" />
 
-            <TextBlock Text="Дата:" FontSize="14"/>
+            <TextBlock Text="Дата:" FontSize="14" Foreground="#FF37474F"/>
             <DatePicker Name="DatePicker" Width="400" Margin="0,0,0,10"/>
 
-            <TextBlock Text="Продолжительность сна (часы):" FontSize="14"/>
-            <TextBox Name="DurationTextBox" Width="400" Height="30" Margin="0,0,0,10"/>
+            <TextBlock Text="Продолжительность сна (часы):" FontSize="14" Foreground="#FF37474F"/>
+            <TextBox Name="DurationTextBox" Width="400" Height="30" Margin="0,0,0,10" 
+                     BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5"/>
 
-            <TextBlock Text="Качество сна:" FontSize="14"/>
-            <ComboBox Name="QualityComboBox" Width="400" Height="30" Margin="0,0,0,10">
+            <TextBlock Text="Качество сна:" FontSize="14" Foreground="#FF37474F"/>
+            <ComboBox Name="QualityComboBox" Width="400" Height="30" Margin="0,0,0,10"
+                      BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5">
                 <ComboBoxItem>Отлично</ComboBoxItem>
                 <ComboBoxItem>Хорошо</ComboBoxItem>
                 <ComboBoxItem>Среднее</ComboBoxItem>
@@ -36,7 +38,26 @@
             <Button Name="SaveSleepButton" Content="Сохранить данные о сне" Width="400" Height="35"
                     Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="SaveSleepButton_Click" Margin="0,5,0,10"/>
 
-            <DataGrid Name="SleepDataGrid" AutoGenerateColumns="True" Width="400" Height="200" Margin="0,10,0,0" />
+            <!-- Таблица данных о сне -->
+            <DataGrid Name="SleepDataGrid" AutoGenerateColumns="False" Width="400" Height="200" Margin="0,10,0,0"
+                      Background="#FFE1F5FE" Foreground="#FF37474F" FontSize="14"
+                      RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                      BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#FF2196F3"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="Padding" Value="10"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Дата" Binding="{Binding Date, StringFormat=\{0:dd.MM.yyyy\}}" Width="*"/>
+                    <DataGridTextColumn Header="Продолжительность (часы)" Binding="{Binding Duration}" Width="*"/>
+                    <DataGridTextColumn Header="Качество сна" Binding="{Binding Quality}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
     </Grid>
 </Page>
