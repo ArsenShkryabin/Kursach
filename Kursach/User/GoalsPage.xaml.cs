@@ -9,7 +9,15 @@ namespace Kursach.User
     public partial class GoalsPage : Page
     {
         private KursovayaEntities context = new KursovayaEntities();
-        private int currentUserId; // ID текущего пользователя
+        private int currentUserId;
+
+        public class GoalViewModel
+        {
+            public int GoalId { get; set; }
+            public string Title { get; set; }
+            public string Description { get; set; }
+            public string Status { get; set; }
+        }
 
         public GoalsPage(int userId)
         {
@@ -18,42 +26,32 @@ namespace Kursach.User
             LoadGoals();
         }
 
-        public class GoalViewModel
-        {
-            public string Title { get; set; }
-            public string Description { get; set; }
-            public string Status { get; set; }
-        }
-
-        // Загрузка целей пользователя
         private void LoadGoals()
         {
             var goals = context.Goals
                 .Where(g => g.UserId == currentUserId)
-                .Select(g => new
+                .Select(g => new GoalViewModel
                 {
+                    GoalId = g.GoalId,
                     Title = g.Title,
                     Description = g.Description,
                     Status = g.IsCompleted ? "Выполнено" : "В процессе"
                 })
                 .ToList();
 
-            GoalsListView.ItemsSource = goals;
-
-            // Обновление статуса выполнения
-            int completedGoals = context.Goals.Count(g => g.UserId == currentUserId && g.IsCompleted);
-            int totalGoals = context.Goals.Count(g => g.UserId == currentUserId);
-            if (totalGoals > 0)
-            {
-                ProgressTextBlock.Text = $"Выполнено {completedGoals} из {totalGoals} целей.";
-            }
-            else
-            {
-                ProgressTextBlock.Text = "У вас пока нет целей.";
-            }
+            GoalsDataGrid.ItemsSource = goals;
+            UpdateProgress();
         }
 
-        // Добавление новой цели
+        private void UpdateProgress()
+        {
+            int completed = context.Goals.Count(g => g.UserId == currentUserId && g.IsCompleted);
+            int total = context.Goals.Count(g => g.UserId == currentUserId);
+            ProgressTextBlock.Text = total > 0
+                ? $"Выполнено {completed} из {total} целей."
+                : "У вас пока нет целей.";
+        }
+
         private void AddGoalButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(GoalTextBox.Text))
@@ -62,34 +60,25 @@ namespace Kursach.User
                 return;
             }
 
-            var newGoal = new Goals
+            context.Goals.Add(new Goals
             {
                 UserId = currentUserId,
                 Title = GoalTextBox.Text,
                 Description = DescriptionTextBox.Text,
                 IsCompleted = false
-            };
+            });
 
-            context.Goals.Add(newGoal);
             context.SaveChanges();
-
-            // Очистка полей и обновление списка
-            GoalTextBox.Clear();
-            DescriptionTextBox.Clear();
+            ClearForm();
             LoadGoals();
         }
 
-        // Отметить цель как выполненную
         private void MarkAsCompletedButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedGoal = GoalsListView.SelectedItem as GoalViewModel;
-            if (selectedGoal == null)
-            {
-                MessageBox.Show("Выберите цель для отметки.");
-                return;
-            }
+            var selected = GoalsDataGrid.SelectedItem as GoalViewModel;
+            if (selected == null) return;
 
-            var goal = context.Goals.FirstOrDefault(g => g.UserId == currentUserId && g.Title == selectedGoal.Title);
+            var goal = context.Goals.Find(selected.GoalId);
             if (goal != null)
             {
                 goal.IsCompleted = true;
@@ -98,23 +87,24 @@ namespace Kursach.User
             }
         }
 
-        // Удаление цели
         private void DeleteGoalButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedGoal = GoalsListView.SelectedItem as GoalViewModel;
-            if (selectedGoal == null)
-            {
-                MessageBox.Show("Выберите цель для удаления.");
-                return;
-            }
+            var selected = GoalsDataGrid.SelectedItem as GoalViewModel;
+            if (selected == null) return;
 
-            var goal = context.Goals.FirstOrDefault(g => g.UserId == currentUserId && g.Title == selectedGoal.Title);
+            var goal = context.Goals.Find(selected.GoalId);
             if (goal != null)
             {
                 context.Goals.Remove(goal);
                 context.SaveChanges();
                 LoadGoals();
             }
+        }
+
+        private void ClearForm()
+        {
+            GoalTextBox.Clear();
+            DescriptionTextBox.Clear();
         }
     }
 }

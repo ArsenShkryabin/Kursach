@@ -8,55 +8,92 @@
       d:DesignHeight="600" d:DesignWidth="800"
       Title="Управление привычками">
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FFB3E5FC" Offset="0.0" />
-                <GradientStop Color="#FFE1F5FE" Offset="1.0" />
-            </LinearGradientBrush>
-        </Grid.Background>
+    <ScrollViewer>
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFB3E5FC" Offset="0.0" />
+                    <GradientStop Color="#FFE1F5FE" Offset="1.0" />
+                </LinearGradientBrush>
+            </Grid.Background>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
-            <TextBlock Text="Управление привычками" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" 
-                       HorizontalAlignment="Center" Foreground="#FF37474F" />
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20">
+                <!-- Заголовок -->
+                <TextBlock Text="Управление привычками" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,25" 
+                           Foreground="#FF37474F"/>
 
-            <TextBlock Text="Добавить привычку:" FontSize="14" Foreground="#FF37474F" />
-            <TextBox Name="HabitTextBox" Width="500" Height="30" Margin="0,0,0,10" 
-                     BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" />
+                <!-- Форма добавления привычки -->
+                <Border Background="#FFE1F5FE" 
+                        CornerRadius="8" 
+                        Padding="15" 
+                        Margin="0,0,0,20"
+                        BorderBrush="#FF2196F3" 
+                        BorderThickness="2">
+                    <StackPanel>
+                        <TextBlock Text="Добавить привычку:" FontSize="16" Foreground="#FF37474F" />
+                        <TextBox Name="HabitTextBox" Height="30" Margin="0,0,0,10" 
+                                 BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" />
 
-            <TextBlock Text="Описание:" FontSize="14" Foreground="#FF37474F" />
-            <TextBox Name="DescriptionTextBox" Width="500" Height="60" Margin="0,0,0,20" 
-                     BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" TextWrapping="Wrap" />
+                        <TextBlock Text="Описание:" FontSize="16" Foreground="#FF37474F" />
+                        <TextBox Name="DescriptionTextBox" Height="60" Margin="0,0,0,20" 
+                                 BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" TextWrapping="Wrap" />
 
-            <Button Name="AddHabitButton" Content="Добавить привычку" Width="500" Height="35" Margin="0,10,0,0" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="AddHabitButton_Click"/>
+                        <Button Name="AddHabitButton" Content="Добавить привычку" Height="40" 
+                                Background="#FF2196F3" Foreground="White" FontWeight="Bold" 
+                                Click="AddHabitButton_Click"/>
+                    </StackPanel>
+                </Border>
 
-            <!-- Таблица привычек -->
-            <DataGrid Name="HabitsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
-                      Width="500" Height="200" Margin="0,10,0,10"
-                      Background="Transparent" Foreground="#FF37474F" FontSize="14"
-                      RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
-                      BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#FF2196F3"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Padding" Value="10"/>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название" Binding="{Binding name}" Width="*"/>
-                    <DataGridTextColumn Header="Описание" Binding="{Binding description}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                <!-- Таблица привычек -->
+                <DataGrid Name="HabitsDataGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                          Margin="0,10,0,20"
+                          Background="Transparent" Foreground="#FF37474F" FontSize="14"
+                          RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
+                          BorderBrush="#FF2196F3" BorderThickness="2" GridLinesVisibility="None">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#FF37474F"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Название" Binding="{Binding name}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Описание" Binding="{Binding description}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-            <Button Name="RemoveHabitButton" Content="Удалить привычку" Width="500" Height="35" 
-                    Background="#FFf44336" Foreground="White" FontWeight="Bold" Click="RemoveHabitButton_Click"/>
+                <!-- Кнопка для удаления привычки -->
+                <Button Name="RemoveHabitButton" Content="Удалить привычку" Height="40" 
+                        Background="#FFD32F2F" Foreground="White" FontWeight="Bold" 
+                        Click="RemoveHabitButton_Click"/>
 
-            <TextBlock Name="ActionMessageTextBlock" Text="" Foreground="Red" HorizontalAlignment="Center" 
-                       Margin="0,10,0,0" />
-        </StackPanel>
-    </Grid>
+                <!-- Сообщение о действиях -->
+                <TextBlock Name="ActionMessageTextBlock" Text="" Foreground="Red" 
+                           HorizontalAlignment="Center" Margin="0,10,0,0" />
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

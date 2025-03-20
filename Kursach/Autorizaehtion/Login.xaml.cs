@@ -7,6 +7,13 @@ using Kursach.User; // Для доступа к строке подключен�
 
 namespace Kursach.Autorizaehtion
 {
+    public class APPUser // Переименован с User на AppUser
+    {
+        public int UserId { get; set; }
+        public string Login { get; set; }
+        public bool IsAdmin { get; set; }
+    }
+
     public partial class Login : Page
     {
         // Используем контекст базы данных Entity Framework
@@ -22,8 +29,6 @@ namespace Kursach.Autorizaehtion
         {
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
-
-
 
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
@@ -44,13 +49,11 @@ namespace Kursach.Autorizaehtion
                         return;
                     }
 
-                  
-
                     // Проверяем пароль (предполагается, что пароль хранится в виде хэша)
                     if (VerifyPassword(password, user.password_hash))
                     {
                         // Успешная авторизация
-                        App.CurrentUser = new User
+                        App.CurrentUser = new APPUser
                         {
                             UserId = user.user_id,
                             Login = user.login,
@@ -60,13 +63,11 @@ namespace Kursach.Autorizaehtion
                         // Проверка, является ли пользователь администратором
                         if (App.CurrentUser.IsAdmin)
                         {
-                            // Открываем диалоговое окно с выбором
                             ShowAdminChoiceDialog();
                         }
                         else
                         {
-                            // Переход на страницу профиля для обычного пользователя
-                            NavigationService.Navigate(new Profile(user.user_id));
+                            NavigationService.Navigate(new Profile(App.CurrentUser.UserId));
                         }
                     }
                     else
@@ -120,14 +121,6 @@ namespace Kursach.Autorizaehtion
     // Класс для хранения данных текущего пользователя
     public static class App
     {
-        public static User CurrentUser { get; set; }
-    }
-
-    // Класс для представления пользователя
-    public class User
-    {
-        public int UserId { get; set; }
-        public string Login { get; set; }
-        public bool IsAdmin { get; set; }
+        public static APPUser CurrentUser { get; set; }
     }
 }

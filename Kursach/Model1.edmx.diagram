@@ -28,6 +28,8 @@
         <AssociationConnector Association="KursovayaModel.FK__habits__user_id__5812160E" />
         <EntityTypeShape EntityType="KursovayaModel.Goals" Width="1.5" PointX="3" PointY="32.625" />
         <AssociationConnector Association="KursovayaModel.FK__Goals__UserId__5FB337D6" />
+        <EntityTypeShape EntityType="KursovayaModel.UserProfileImages" Width="1.5" PointX="3" PointY="36" />
+        <AssociationConnector Association="KursovayaModel.FK__UserProfi__user___6383C8BA" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

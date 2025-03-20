@@ -1,76 +1,130 @@
 ﻿<Page x:Class="Kursach.User.NutrionTracker"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Kursach.User"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="800"
       Title="Отслеживание питания">
 
-    <Grid Background="#FFE1F5FE">
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="350" Margin="20">
-            <!-- Заголовок -->
-            <TextBlock Text="Отслеживание питания" FontSize="20" FontWeight="Bold" 
-               HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#FF37474F" />
+    <ScrollViewer>
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFB3E5FC" Offset="0.0" />
+                    <GradientStop Color="#FFE1F5FE" Offset="1.0" />
+                </LinearGradientBrush>
+            </Grid.Background>
 
-            <!-- Выбор даты -->
-            <TextBlock Text="Выберите дату:" FontSize="14"/>
-            <DatePicker Name="DatePicker" Width="300" Margin="0,0,0,10" />
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20">
+                <!-- Заголовок -->
+                <TextBlock Text="Отслеживание питания" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,25" 
+                           Foreground="#FF37474F" />
 
-            <!-- Ввод продукта -->
-            <TextBlock Text="Продукт:" FontSize="14"/>
-            <TextBox Name="ProductTextBox" Width="300" Height="30" Margin="0,0,0,10" />
+                <!-- Выбор даты -->
+                <StackPanel>
+                    <TextBlock Text="Выберите дату:" FontSize="16" Foreground="#FF37474F"/>
+                    <DatePicker Name="DatePicker" Margin="0,0,0,10" />
+                </StackPanel>
 
-            <!-- Ввод калорий -->
-            <TextBlock Text="Калории:" FontSize="14"/>
-            <TextBox Name="CaloriesTextBox" Width="300" Height="30" Margin="0,0,0,10" />
+                <!-- Ввод продукта -->
+                <StackPanel>
+                    <TextBlock Text="Продукт:" FontSize="16" Foreground="#FF37474F"/>
+                    <TextBox Name="ProductTextBox" Height="30" Margin="0,0,0,10" 
+                             BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5"/>
+                </StackPanel>
 
-            <!-- Кнопка сохранения -->
-            <Button Name="SaveButton" Content="Сохранить" Width="300" Height="35" 
-            Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="SaveButton_Click"/>
+                <!-- Ввод калорий -->
+                <StackPanel>
+                    <TextBlock Text="Калории:" FontSize="16" Foreground="#FF37474F" />
+                    <TextBox Name="CaloriesTextBox" Height="30" Margin="0,0,0,10" 
+                             BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5"/>
+                </StackPanel>
 
-            <!-- История питания -->
-            <TextBlock Text="История питания:" FontSize="16" FontWeight="Bold" 
-               Margin="0,20,0,5" HorizontalAlignment="Center" Foreground="#FF37474F"/>
-            <ListView Name="NutritionHistoryListView" Width="300" Height="200"
-                      Background="#FFE1F5FE" Foreground="#FF37474F" FontSize="14"
-                      BorderBrush="#FF2196F3" BorderThickness="2">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding date}" Width="100">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Дата" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Продукт" DisplayMemberBinding="{Binding product}" Width="100">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Продукт" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Калории" DisplayMemberBinding="{Binding calories}" Width="80">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Калории" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Background" Value="#FFE1F5FE"/>
-                        <Setter Property="Foreground" Value="#FF37474F"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Padding" Value="5"/>
-                        <Setter Property="BorderBrush" Value="#FFB3E5FC"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+                <!-- Кнопка сохранения -->
+                <Button Name="SaveButton" 
+                        Content="Сохранить" 
+                        Height="40" 
+                        Margin="0,10,0,10" 
+                        Background="#FF4CAF50" 
+                        Foreground="White" 
+                        FontWeight="Bold" 
+                        Click="SaveButton_Click"/>
 
-            <!-- Кнопка удаления -->
-            <Button Name="DeleteButton" Content="Удалить" Width="300" Height="35" 
-            Background="#FFD32F2F" Foreground="White" FontWeight="Bold" Click="DeleteButton_Click"/>
-        </StackPanel>
-    </Grid>
+                <!-- История питания -->
+                <TextBlock Text="История питания:" 
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Margin="0,20,0,5" 
+                           HorizontalAlignment="Center" 
+                           Foreground="#FF37474F"/>
+                <DataGrid Name="NutritionHistoryDataGrid" 
+                           Height="200" 
+                           Margin="0,0,0,10" 
+                           AutoGenerateColumns="False"
+                           Background="Transparent" 
+                           Foreground="#FF37474F" 
+                           FontSize="14" 
+                           RowBackground="#FFE1F5FE" 
+                           AlternatingRowBackground="#FFB3E5FC"
+                           BorderBrush="#FF2196F3" 
+                           BorderThickness="2" 
+                           GridLinesVisibility="None">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#FF37474F"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding date, StringFormat=\{0:dd.MM.yyyy\}}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Продукт" Binding="{Binding product}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Калории" Binding="{Binding calories}" Width="80">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Кнопка удаления -->
+                <Button Name="DeleteButton" 
+                        Content="Удалить" 
+                        Height="40" 
+                        Margin="0,10,0,10" 
+                        Background="#FFD32F2F" 
+                        Foreground="White" 
+                        FontWeight="Bold" 
+                        Click="DeleteButton_Click"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

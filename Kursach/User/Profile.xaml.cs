@@ -3,6 +3,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
+using Kursach.Class;
 using Kursach.Autorizaehtion;
 
 namespace Kursach.User
@@ -29,6 +32,7 @@ namespace Kursach.User
                 EmailTextBox.Text = user.email;
                 HeightTextBox.Text = user.height?.ToString() ?? "Не указано";
                 WeightTextBox.Text = user.weight?.ToString() ?? "Не указано";
+                ProfileImage.Source = new BitmapImage(new Uri(user.profile_image)); // Загрузка изображения профиля
             }
             else
             {
@@ -56,16 +60,19 @@ namespace Kursach.User
             if (user != null)
             {
                 // Обновляем данные пользователя
+                user.first_name = FirstNameTextBox.Text;
+                user.last_name = LastNameTextBox.Text;
                 user.email = EmailTextBox.Text;
 
+                // Явное преобразование типа double в decimal
                 if (double.TryParse(HeightTextBox.Text, out double height))
                 {
-                    
+                    user.height = Convert.ToDecimal(height); // Прямое преобразование double в decimal
                 }
 
                 if (double.TryParse(WeightTextBox.Text, out double weight))
                 {
-                    
+                    user.weight = Convert.ToDecimal(weight); // Прямое преобразование double в decimal
                 }
 
                 try
@@ -86,119 +93,109 @@ namespace Kursach.User
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            EditProfile();
+            EditProfile(); // Вызов метода для редактирования профиля
         }
 
         private void Logout()
         {
-            // Очищаем данные текущего пользователя
-            App.CurrentUser = null;
-
-            // Переходим на страницу авторизации
-            NavigationService.Navigate(new Login());
+            App.CurrentUser = null; // Очищаем данные текущего пользователя
+            NavigationService.Navigate(new Login()); // Переходим на страницу авторизации
         }
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            Logout();
+            Logout(); // Вызов метода выхода из системы
+        }
+
+        // Остальная логика для кнопок перехода...
+        // Например, для перехода к подсчету калорий, привычкам и так далее
+
+        private void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp|All Files|*.*",
+                Title = "Выберите изображение профиля"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                ProfileImage.Source = new BitmapImage(new Uri(filePath));
+
+                // Сохранение пути к изображению в базе данных
+                var user = context.users.FirstOrDefault(u => u.user_id == currentUserId);
+                if (user != null)
+                {
+                    user.profile_image = filePath;
+                    context.SaveChanges();
+                }
+            }
         }
 
         private void CalorieTrackerButton_Click(object sender, RoutedEventArgs e)
         {
-            // Логика перехода к подсчету калорий
-            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
-            UsersCalories usersCalories = new UsersCalories(userId); // Передаем userId
-            NavigationService.Navigate(usersCalories);
-        }
 
-        
-
-        private void MyHabigsButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Логика перехода к привычкам
-            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
-            HabbitPage habbitpage = new HabbitPage(userId); // Передаем userId
-            NavigationService.Navigate(habbitpage);
-        }
-
-        private void HistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Логика перехода к истории
-            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
-            HistoryUsers historyUsers = new HistoryUsers(userId); // Передаем userId
-            NavigationService.Navigate(historyUsers);
-        }
-
-        private void MyHabitsButton_Click(object sender, RoutedEventArgs e)
-        {
-            int userId = App.CurrentUser.user_id; // Получаем userId текущего пользователя
-            HabbitPage habbitpage = new HabbitPage(userId); // Передаем userId
-            NavigationService.Navigate(habbitpage);
-        }
-
-        private void SleepTrackerButton_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new SleepTrackerPage());
-        }
-
-        private void NutritionTrackerButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            int userId = App.CurrentUser.user_id; // Получаем ID текущего пользователя
-            NutrionTracker nutritionTracker = new NutrionTracker(userId);
-            NavigationService.Navigate(nutritionTracker);
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            // Адаптация интерфейса при изменении размеров окна
-            if (e.NewSize.Width < 800)
-            {
-                // Уменьшаем ширину боковой панели
-                SidePanel.Width = 150;
-            }
-            else
-            {
-                // Восстанавливаем ширину боковой панели
-                SidePanel.Width = 200;
-            }
-        }
-
-        private void EditButton_Click_1(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void UserStateButton_Click(object sender, RoutedEventArgs e)
-        {
-            int userId = App.CurrentUser.user_id; // Получаем ID текущего пользователя
-            CondtitionUser condititionuser = new CondtitionUser(userId);
-            NavigationService.Navigate(condititionuser);
-        }
-        private void SleepRecommendationsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://www.sleepfoundation.org/"); // Сайт с рекомендациями по сну
-        }
-
-        private void NutritionRecommendationsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://www.healthline.com/nutrition"); // Сайт с рекомендациями по питанию
         }
 
         private void FitnessRecommendationsButton_Click(object sender, RoutedEventArgs e)
         {
-            Process.Start("https://www.webmd.com/fitness-exercise/"); // Сайт с рекомендациями по фитнесу
-        }
 
-        private void MentalHealthRecommendationsButton_Click(object sender, RoutedEventArgs e)
-        {
-            Process.Start("https://www.mentalhealth.gov/"); // Сайт с рекомендациями по здоровью
         }
 
         private void GoalsButton_Click(object sender, RoutedEventArgs e)
         {
-            int userId = App.CurrentUser.user_id; // Получаем ID текущего пользователя
-            GoalsPage goalsPage =  new GoalsPage(userId);
-            NavigationService.Navigate(goalsPage);
+
+        }
+
+        private void HistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MentalHealthRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NutritionTrackerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+
+        }
+
+        private void Page_SizeChanged_1(object sender, SizeChangedEventArgs e)
+        {
+
+        }
+
+        private void SleepTrackerButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UserStateButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MyHabitsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void NutritionRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SleepRecommendationsButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

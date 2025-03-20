@@ -3,85 +3,149 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Title="Цели пользователя">
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FFB3E5FC" Offset="0.0" />
-                <GradientStop Color="#FFE1F5FE" Offset="1.0" />
-            </LinearGradientBrush>
-        </Grid.Background>
+    <ScrollViewer>
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FFB3E5FC" Offset="0.0"/>
+                    <GradientStop Color="#FFE1F5FE" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
 
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="500" Margin="20">
-            <TextBlock Text="Управление целями" FontSize="20" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,20" Foreground="#FF37474F" />
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="20">
 
-            <!-- Форма добавления цели -->
-            <TextBlock Text="Новая цель:" FontSize="14" Foreground="#FF37474F" />
-            <TextBox Name="GoalTextBox" Width="500" Height="30" Margin="0,0,0,10" 
-                     BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" />
+                <!-- Заголовок -->
+                <TextBlock Text="Управление целями" 
+                           FontSize="24" 
+                           FontWeight="Bold" 
+                           HorizontalAlignment="Center" 
+                           Margin="0,0,0,25" 
+                           Foreground="#FF37474F"/>
 
-            <TextBlock Text="Описание:" FontSize="14" Foreground="#FF37474F" />
-            <TextBox Name="DescriptionTextBox" Width="500" Height="60" Margin="0,0,0,20" 
-                     BorderBrush="#FF2196F3" BorderThickness="1.5" Padding="5" TextWrapping="Wrap" />
+                <!-- Форма добавления целей -->
+                <Border Background="#FFE1F5FE" 
+                        CornerRadius="8" 
+                        Padding="15" 
+                        Margin="0,0,0,20"
+                        BorderBrush="#FF2196F3" 
+                        BorderThickness="2">
+                    <StackPanel>
+                        <TextBlock Text="Новая цель:" 
+                                   FontSize="16" 
+                                   Foreground="#FF37474F"
+                                   Margin="0,0,0,5"/>
+                        <TextBox Name="GoalTextBox" 
+                                 Height="35" 
+                                 FontSize="14"
+                                 BorderBrush="#FF2196F3" 
+                                 BorderThickness="1.5"
+                                 Padding="5"/>
 
-            <Button Name="AddGoalButton" Content="Добавить цель" Width="500" Height="35" 
-                    Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="AddGoalButton_Click"/>
+                        <TextBlock Text="Описание:" 
+                                   FontSize="16" 
+                                   Foreground="#FF37474F"
+                                   Margin="0,10,0,5"/>
+                        <TextBox Name="DescriptionTextBox" 
+                                 Height="60" 
+                                 FontSize="14"
+                                 BorderBrush="#FF2196F3" 
+                                 BorderThickness="1.5"
+                                 Padding="5" 
+                                 TextWrapping="Wrap"/>
 
-            <!-- Список целей -->
-            <TextBlock Text="Мои цели:" FontSize="16" FontWeight="Bold" 
-                       Margin="0,20,0,10" Foreground="#FF37474F" />
-            <ListView Name="GoalsListView" Width="500" Height="300"
-                      Background="#FFE1F5FE" Foreground="#FF37474F" FontSize="14"
-                      BorderBrush="#FF2196F3" BorderThickness="2">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Цель" DisplayMemberBinding="{Binding Title}" Width="150">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Цель" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}" Width="200">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Описание" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="100">
-                            <GridViewColumn.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="Статус" Foreground="White" FontWeight="Bold" Padding="5"/>
-                                </DataTemplate>
-                            </GridViewColumn.HeaderTemplate>
-                        </GridViewColumn>
-                    </GridView>
-                </ListView.View>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Background" Value="#FFE1F5FE"/>
-                        <Setter Property="Foreground" Value="#FF37474F"/>
-                        <Setter Property="FontSize" Value="14"/>
-                        <Setter Property="Padding" Value="5"/>
-                        <Setter Property="BorderBrush" Value="#FFB3E5FC"/>
-                        <Setter Property="BorderThickness" Value="1"/>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+                        <Button Name="AddGoalButton" 
+                                Content="Добавить цель" 
+                                Height="40" 
+                                FontSize="16"
+                                Background="#FF4CAF50" 
+                                Foreground="White" 
+                                FontWeight="Bold"
+                                Margin="0,15,0,0"
+                                Click="AddGoalButton_Click"/>
+                    </StackPanel>
+                </Border>
 
-            <!-- Кнопки управления -->
-            <Button Name="MarkAsCompletedButton" Content="Отметить как выполненное" Width="500" Height="35" 
-                    Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MarkAsCompletedButton_Click"
-                    Margin="0,10,0,5"/>
+                <!-- Таблица целей -->
+                <DataGrid Name="GoalsDataGrid" 
+                          AutoGenerateColumns="False" 
+                          Margin="0,10,0,10"
+                          Background="Transparent" 
+                          Foreground="#FF37474F" 
+                          FontSize="14"
+                          RowBackground="#FFE1F5FE" 
+                          AlternatingRowBackground="#FFB3E5FC"
+                          BorderBrush="#FF2196F3" 
+                          BorderThickness="2" 
+                          GridLinesVisibility="None"
+                          CanUserAddRows="False">
+                    <DataGrid.ColumnHeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="Foreground" Value="#FF37474F"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Padding" Value="10"/>
+                        </Style>
+                    </DataGrid.ColumnHeaderStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Цель" Binding="{Binding Title}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="2*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#FF37474F"/>
+                                    <Setter Property="FontSize" Value="14"/>
+                                    <Setter Property="Padding" Value="5"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
 
-            <Button Name="DeleteGoalButton" Content="Удалить цель" Width="500" Height="35" 
-                    Background="#FFD32F2F" Foreground="White" FontWeight="Bold" Click="DeleteGoalButton_Click"
-                    Margin="0,5,0,5"/>
+                <!-- Кнопки управления -->
+                <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                    <Button Name="MarkAsCompletedButton" 
+                            Content="Отметить как выполненное" 
+                            Height="40" 
+                            FontSize="16"
+                            Background="#FF2196F3" 
+                            Foreground="White" 
+                            FontWeight="Bold"
+                            Click="MarkAsCompletedButton_Click"/>
 
-            <!-- Статус выполнения целей -->
-            <TextBlock Name="ProgressTextBlock" FontSize="14" Foreground="#FF37474F" 
-                       Margin="0,10,0,0" />
-        </StackPanel>
-    </Grid>
+                    <Button Name="DeleteGoalButton" 
+                            Content="Удалить цель" 
+                            Height="40" 
+                            FontSize="16"
+                            Background="#FFD32F2F" 
+                            Foreground="White" 
+                            FontWeight="Bold"
+                            Margin="0,10,0,0"
+                            Click="DeleteGoalButton_Click"/>
+                </StackPanel>
+
+                <!-- Статус выполнения -->
+                <TextBlock Name="ProgressTextBlock" 
+                           FontSize="14" 
+                           Foreground="#FF37474F" 
+                           Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
 </Page>

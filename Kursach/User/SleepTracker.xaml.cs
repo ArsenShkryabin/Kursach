@@ -19,7 +19,7 @@ namespace Kursach.User
         {
             try
             {
-                SleepDataGrid.ItemsSource = context.sleep
+                SleepHistoryDataGrid.ItemsSource = context.sleep
                     .Where(s => s.user_id == App.CurrentUser.user_id)
                     .OrderByDescending(s => s.date)
                     .ToList();
@@ -58,6 +58,16 @@ namespace Kursach.User
             {
                 MessageBox.Show("Ошибка при сохранении данных о сне: " + ex.Message);
             }
+        }
+
+        private void RemoveSleepButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void RemoveSleepButton_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

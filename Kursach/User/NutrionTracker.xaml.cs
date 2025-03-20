@@ -28,7 +28,7 @@ namespace Kursach.User
                     .OrderByDescending(n => n.nutrition_id)
                     .ToList();
 
-                NutritionHistoryListView.ItemsSource = entries;
+                NutritionHistoryDataGrid.ItemsSource = entries;
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace Kursach.User
         // Удаление записи о питании
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItem = NutritionHistoryListView.SelectedItem as nutrition;
+            var selectedItem = NutritionHistoryDataGrid.SelectedItem as nutrition;
 
             if (selectedItem == null)
             {

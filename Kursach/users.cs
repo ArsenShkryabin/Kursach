@@ -27,6 +27,7 @@ namespace Kursach
             this.workouts = new HashSet<workouts>();
             this.habits = new HashSet<habits>();
             this.Goals = new HashSet<Goals>();
+            this.UserProfileImages = new HashSet<UserProfileImages>();
         }
     
         public int user_id { get; set; }
@@ -37,6 +38,9 @@ namespace Kursach
         public Nullable<decimal> height { get; set; }
         public Nullable<bool> is_admin { get; set; }
         public Nullable<bool> is_blocked { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string profile_image { get; set; }
     
         public virtual ICollection<calories> calories { get; set; }
         public virtual ICollection<health_metrics> health_metrics { get; set; }
@@ -49,5 +53,6 @@ namespace Kursach
         public virtual ICollection<workouts> workouts { get; set; }
         public virtual ICollection<habits> habits { get; set; }
         public virtual ICollection<Goals> Goals { get; set; }
+        public virtual ICollection<UserProfileImages> UserProfileImages { get; set; }
     }
 }

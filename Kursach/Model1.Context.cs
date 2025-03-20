@@ -37,5 +37,6 @@ namespace Kursach
         public DbSet<workouts> workouts { get; set; }
         public DbSet<habits> habits { get; set; }
         public DbSet<Goals> Goals { get; set; }
+        public DbSet<UserProfileImages> UserProfileImages { get; set; }
     }
 }

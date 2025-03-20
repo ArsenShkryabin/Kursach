@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Kursach.Class;
 
 namespace Kursach.User
 {
     public partial class CondtitionUser : Page
     {
+        private int userId;
         private KursovayaEntities context;
+        
 
         public CondtitionUser(int userId)
         {
             InitializeComponent();
+            this.userId = userId;
             context = new KursovayaEntities();
             LoadStateHistory(); // Загружаем историю состояний при инициализации страницы
+            
         }
 
         // Метод для оценки состояния и формирования рекомендации
@@ -86,20 +91,11 @@ namespace Kursach.User
         {
             try
             {
-                // Получаем историю состояний для текущего пользователя
                 var stateHistory = context.user_conditions
-                    .Where(uc => uc.user_id == App.CurrentUser.user_id) // Фильтруем по текущему пользователю
+                    .Where(uc => uc.user_id == CurrentUser.User.UserId) // Используем текущего пользователя
                     .OrderByDescending(uc => uc.date)
-                    .Select(uc => new UserState
-                    {
-                        Date = uc.date,
-                        PhysicalState = uc.physical_condition,
-                        MentalState = uc.mental_condition,
-                        Recommendations = uc.recommendations
-                    })
                     .ToList();
 
-                // Устанавливаем источник данных для DataGrid
                 UserStateDataGrid.ItemsSource = stateHistory;
             }
             catch (Exception ex)
