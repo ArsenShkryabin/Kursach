@@ -21,8 +21,6 @@ namespace Kursach
             this.nutrition = new HashSet<nutrition>();
             this.sleep = new HashSet<sleep>();
             this.user_conditions = new HashSet<user_conditions>();
-            this.user_goals = new HashSet<user_goals>();
-            this.user_habits = new HashSet<user_habits>();
             this.water_intake = new HashSet<water_intake>();
             this.workouts = new HashSet<workouts>();
             this.habits = new HashSet<habits>();
@@ -47,8 +45,6 @@ namespace Kursach
         public virtual ICollection<nutrition> nutrition { get; set; }
         public virtual ICollection<sleep> sleep { get; set; }
         public virtual ICollection<user_conditions> user_conditions { get; set; }
-        public virtual ICollection<user_goals> user_goals { get; set; }
-        public virtual ICollection<user_habits> user_habits { get; set; }
         public virtual ICollection<water_intake> water_intake { get; set; }
         public virtual ICollection<workouts> workouts { get; set; }
         public virtual ICollection<habits> habits { get; set; }

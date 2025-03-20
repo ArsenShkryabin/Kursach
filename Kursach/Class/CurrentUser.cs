@@ -2,9 +2,39 @@
 
 namespace Kursach.Class
 {
-    public static class CurrentUser
+    // Класс для хранения информации о текущем пользователе
+    public class CurrentUser
     {
-        public static APPUser User { get; set; } // Объект текущего пользователя
+        private static CurrentUser _instance; // единственный экземпляр класса
+
+        public static CurrentUser Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new CurrentUser();
+                }
+                return _instance;
+            }
+        }
+
+        public APPUser User { get; private set; } // Объект текущего пользователя
+
+        // Приватный конструктор для предотвращения создания экземпляров извне
+        private CurrentUser() { }
+
+        // Метод для установки текущего пользователя
+        public void SetCurrentUser(APPUser user)
+        {
+            User = user;
+        }
+
+        // Метод для проверки, есть ли текущий аутентифицированный пользователь
+        public bool IsAuthenticated()
+        {
+            return User != null;
+        }
     }
 
     // Класс для представления пользователя
@@ -14,10 +44,12 @@ namespace Kursach.Class
         public string Login { get; set; }
         public bool IsAdmin { get; set; }
 
-        public static implicit operator APPUser(Autorizaehtion.APPUser v)
+        // Конструктор для удобного создания экземпляров APPUser
+        public APPUser(int userId, string login, bool isAdmin)
         {
-            throw new NotImplementedException();
+            UserId = userId;
+            Login = login;
+            IsAdmin = isAdmin;
         }
-        // Другие свойства, если необходимо
     }
 }

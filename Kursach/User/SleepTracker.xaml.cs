@@ -8,21 +8,32 @@ namespace Kursach.User
     public partial class SleepTrackerPage : Page
     {
         private KursovayaEntities context = new KursovayaEntities();
+        private int currentUserId;
 
-        public SleepTrackerPage()
+        public SleepTrackerPage(int userId)
         {
             InitializeComponent();
+            currentUserId = userId; // Предполагается, что currentUserId получает значение корректно
             LoadSleepData();
+           
         }
 
         private void LoadSleepData()
         {
             try
             {
-                SleepHistoryDataGrid.ItemsSource = context.sleep
-                    .Where(s => s.user_id == App.CurrentUser.user_id)
+                var sleepData = context.sleep
+                    .Where(s => s.user_id == currentUserId)
                     .OrderByDescending(s => s.date)
+                    .Select(s => new SleepEntryViewModel
+                    {
+                        Date = s.date,
+                        
+                        Quality = s.quality
+                    })
                     .ToList();
+
+                SleepHistoryDataGrid.ItemsSource = sleepData;
             }
             catch (Exception ex)
             {
@@ -42,7 +53,7 @@ namespace Kursach.User
             {
                 var sleepEntry = new sleep
                 {
-                    user_id = App.CurrentUser.user_id,
+                    user_id = currentUserId,
                     date = DatePicker.SelectedDate.Value,
                     duration = int.Parse(DurationTextBox.Text),
                     quality = ((ComboBoxItem)QualityComboBox.SelectedItem).Content.ToString()
@@ -52,7 +63,7 @@ namespace Kursach.User
                 context.SaveChanges();
 
                 MessageBox.Show("Данные о сне успешно сохранены!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
-                LoadSleepData();
+                LoadSleepData(); // Обновляем таблицу после сохранения
             }
             catch (Exception ex)
             {
@@ -62,12 +73,19 @@ namespace Kursach.User
 
         private void RemoveSleepButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // Логика удаления записи о сне
         }
 
         private void RemoveSleepButton_Click_1(object sender, RoutedEventArgs e)
         {
-
+            // Логика удаления записи о сне
         }
+    }
+
+    public class SleepEntryViewModel
+    {
+        public DateTime Date { get; set; }
+        public int Duration { get; set; }
+        public string Quality { get; set; }
     }
 }

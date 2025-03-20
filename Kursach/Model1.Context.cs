@@ -30,8 +30,6 @@ namespace Kursach
         public DbSet<nutrition> nutrition { get; set; }
         public DbSet<sleep> sleep { get; set; }
         public DbSet<user_conditions> user_conditions { get; set; }
-        public DbSet<user_goals> user_goals { get; set; }
-        public DbSet<user_habits> user_habits { get; set; }
         public DbSet<users> users { get; set; }
         public DbSet<water_intake> water_intake { get; set; }
         public DbSet<workouts> workouts { get; set; }

@@ -137,12 +137,6 @@
     <Compile Include="user_conditions.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="user_goals.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="user_habits.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="water_intake.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

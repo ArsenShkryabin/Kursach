@@ -30,7 +30,8 @@ namespace Kursach.Autorizaehtion
             string username = UsernameTextBox.Text;
             string password = PasswordBox.Password;
 
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            //Убираем проверку на пустые поля
+             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ErrorMessageTextBlock.Text = "Пожалуйста, введите логин и пароль.";
                 return;
@@ -38,18 +39,20 @@ namespace Kursach.Autorizaehtion
 
             try
             {
+                // Ищем пользователя по логину
                 var user = context.users.FirstOrDefault(u => u.login == username);
 
+                // Если пользователь найден, продолжим
                 if (user != null)
                 {
-                    // Проверяем, заблокирован ли пользователь
+                    // Если пользователь заблокирован, информируем об этом
                     if (user.is_blocked == true)
                     {
                         ErrorMessageTextBlock.Text = "Ваш аккаунт заблокирован.";
                         return;
                     }
 
-                    // Проверяем пароль (предполагается, что пароль хранится в виде хэша)
+                    // Проверяем пароль, даже если пользователь может не иметь всех полей заполненными
                     if (VerifyPassword(password, user.password_hash))
                     {
                         // Успешная авторизация
@@ -77,6 +80,7 @@ namespace Kursach.Autorizaehtion
                 }
                 else
                 {
+                    // Информируем, если пользователь не найден
                     ErrorMessageTextBlock.Text = "Пользователь не найден.";
                 }
             }
@@ -89,7 +93,7 @@ namespace Kursach.Autorizaehtion
         // Метод для проверки пароля (замените на реальную проверку хэша)
         private bool VerifyPassword(string inputPassword, string storedPasswordHash)
         {
-            // В реальном приложении используйте библиотеку для проверки хэша, например, BCrypt
+            // Используйте реальную логику проверки хэша паролей
             return inputPassword == storedPasswordHash; // Заглушка для примера
         }
 

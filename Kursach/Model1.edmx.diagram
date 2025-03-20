@@ -10,8 +10,6 @@
         <EntityTypeShape EntityType="KursovayaModel.nutrition" Width="1.5" PointX="3" PointY="8.625" IsExpanded="true" />
         <EntityTypeShape EntityType="KursovayaModel.sleep" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="KursovayaModel.user_conditions" Width="1.5" PointX="3" PointY="14.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="KursovayaModel.user_goals" Width="1.5" PointX="3" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="KursovayaModel.user_habits" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="KursovayaModel.users" Width="1.5" PointX="0.75" PointY="13.375" IsExpanded="true" />
         <EntityTypeShape EntityType="KursovayaModel.water_intake" Width="1.5" PointX="3" PointY="23.625" IsExpanded="true" />
         <EntityTypeShape EntityType="KursovayaModel.workouts" Width="1.5" PointX="3" PointY="26.25" IsExpanded="true" />
@@ -20,8 +18,6 @@
         <AssociationConnector Association="KursovayaModel.FK__nutrition__user___534D60F1" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__sleep__user_id__44FF419A" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__user_cond__user___5070F446" ManuallyRouted="false" />
-        <AssociationConnector Association="KursovayaModel.FK__user_goal__user___3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="KursovayaModel.FK__user_habi__user___4D94879B" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__water_int__user___47DBAE45" ManuallyRouted="false" />
         <AssociationConnector Association="KursovayaModel.FK__workouts__user_i__4222D4EF" ManuallyRouted="false" />
         <EntityTypeShape EntityType="KursovayaModel.habits" Width="1.5" PointX="3" PointY="29.625" />

@@ -9,8 +9,8 @@ namespace Kursach
 {
     class PageClass0
     {
-        public static Frame frmObj;
-        public static KursovayaEntities connectBD;
+        
+        
         
     }
 }

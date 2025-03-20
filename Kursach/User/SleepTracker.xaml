@@ -42,50 +42,11 @@
 
                 <TextBlock Text="История сна:" FontSize="20" FontWeight="Bold" 
                            Margin="0,20,0,5" HorizontalAlignment="Center" Foreground="#FF37474F"/>
-                <DataGrid Name="SleepHistoryDataGrid" 
-                           AutoGenerateColumns="False"
-                           Background="Transparent" Foreground="#FF37474F" 
-                           FontSize="14" Margin="0,0,0,10"
-                           RowBackground="#FFE1F5FE" AlternatingRowBackground="#FFB3E5FC"
-                           BorderBrush="#FF2196F3" BorderThickness="2"
-                           GridLinesVisibility="None">
-                    <DataGrid.ColumnHeaderStyle>
-                        <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="Transparent"/>
-                            <Setter Property="Foreground" Value="#FF37474F"/>
-                            <Setter Property="FontWeight" Value="Bold"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Padding" Value="10"/>
-                        </Style>
-                    </DataGrid.ColumnHeaderStyle>
+                <DataGrid x:Name="SleepHistoryDataGrid" AutoGenerateColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Дата" Binding="{Binding date, StringFormat=\{0:dd.MM.yyyy\}}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#FF37474F"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Padding" Value="5"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Продолжительность (часы)" Binding="{Binding duration}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#FF37474F"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Padding" Value="5"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn Header="Качество сна" Binding="{Binding quality}" Width="*">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="#FF37474F"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Padding" Value="5"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding Date}" />
+                        <DataGridTextColumn Header="Продолжительность (мин)" Binding="{Binding Duration}" />
+                        <DataGridTextColumn Header="Качество" Binding="{Binding Quality}" />
                     </DataGrid.Columns>
                 </DataGrid>
 

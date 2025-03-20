@@ -22,7 +22,8 @@ namespace Kursach.Autorizaehtion
             string email = EmailTextBox.Text;
 
             // Проверка, что все поля заполнены
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) ||
+                string.IsNullOrWhiteSpace(confirmPassword) || string.IsNullOrWhiteSpace(email))
             {
                 RegistrationErrorMessageTextBlock.Text = "Пожалуйста, заполните все поля.";
                 return;
@@ -58,13 +59,29 @@ namespace Kursach.Autorizaehtion
                     login = username,
                     password_hash = password, // Сохраняем пароль в открытом виде (не рекомендуется)
                     email = email,
-                    is_admin = false // Или true, если это администратор
+                    is_admin = false, // Задаем значение is_admin как false
+
+                    // Остальные поля будут заполняться значением null. 
+                    first_name = null,
+                    last_name = null,
+                    weight = null,
+                    height = 111,
+                    is_blocked = null,
+                    // Добавьте другие необходимые поля, заполненные как null, здесь
                 };
 
+                // Добавление нового пользователя в контекст и сохранение изменений
                 context.users.Add(newUser);
                 context.SaveChanges();
 
-                // Успешная регистрация, переход на страницу входа
+                // Успешная регистрация, инициализируем текущего пользователя
+                App.CurrentUser = new APPUser
+                {
+                    UserId = newUser.user_id, // Предполагаем, что user_id автоинкрементируется
+                    Login = newUser.login,
+                    IsAdmin = newUser.is_admin ?? false
+                };
+
                 MessageBox.Show("Регистрация прошла успешно! Теперь вы можете войти в систему.");
                 NavigationService.Navigate(new Login());
             }
@@ -102,7 +119,7 @@ namespace Kursach.Autorizaehtion
 
         private void Hyperlink_Click(object sender, RoutedEventArgs e)
         {
-
+            // Здесь можно реализовать переход в другую часть приложения или открытие ссылки
         }
     }
 }

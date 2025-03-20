@@ -14,6 +14,7 @@ namespace Kursach.AdminPages
         {
             InitializeComponent();
             this.userId = userId;
+
             LoadUserProfile();
         }
 

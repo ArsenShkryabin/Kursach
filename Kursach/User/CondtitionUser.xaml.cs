@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,43 +8,34 @@ namespace Kursach.User
 {
     public partial class CondtitionUser : Page
     {
-        private int userId;
+        private int currentUserId;
         private KursovayaEntities context;
-        
 
         public CondtitionUser(int userId)
         {
             InitializeComponent();
-            this.userId = userId;
-            context = new KursovayaEntities();
+            currentUserId = userId;
+            context = new KursovayaEntities(); // Инициализация контекста
+
+            LoadCurrentUser(); // Проверка и загрузка текущего пользователя
             LoadStateHistory(); // Загружаем историю состояний при инициализации страницы
-            
         }
 
-        // Метод для оценки состояния и формирования рекомендации
-        private void EvaluateStateButton_Click(object sender, RoutedEventArgs e)
+        private void LoadCurrentUser()
         {
-            string physicalState = ((ComboBoxItem)PhysicalStateComboBox.SelectedItem)?.Content.ToString();
-            string mentalState = ((ComboBoxItem)MentalStateComboBox.SelectedItem)?.Content.ToString();
+            int userId = App.CurrentUser.user_id;
+            var user = context.users.SingleOrDefault(u => u.user_id == userId);
 
-            // Проверка, выбраны ли состояния
-            if (string.IsNullOrEmpty(physicalState) || string.IsNullOrEmpty(mentalState))
+            if (user == null)
             {
-                MessageTextBlock.Text = "Пожалуйста, выберите физическое и моральное состояние.";
+                MessageBox.Show("Пользователь не найден. Пожалуйста, войдите в систему.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            // Формируем рекомендацию на основе состояний
-            string recommendation = GetRecommendation(physicalState, mentalState);
-
-            // Показываем уведомление с рекомендацией
-            MessageBox.Show(recommendation, "Рекомендация", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            // Обновляем текстовое поле с рекомендацией
-            MessageTextBlock.Text = recommendation;
+            // Используем оператор ?? для обработки значения IsAdmin
+            CurrentUser.Instance.SetCurrentUser(new APPUser(user.user_id, user.first_name, user.is_admin ?? false));
         }
 
-        // Метод для сохранения состояния в базу данных
         private void SaveStateButton_Click(object sender, RoutedEventArgs e)
         {
             string physicalState = ((ComboBoxItem)PhysicalStateComboBox.SelectedItem)?.Content.ToString();
@@ -63,17 +53,15 @@ namespace Kursach.User
 
             try
             {
-                // Создаем новую запись о состоянии пользователя
                 var userCondition = new user_conditions
                 {
-                    user_id = App.CurrentUser.user_id, // Связываем с текущим пользователем
+                    user_id = CurrentUser.Instance.User.UserId,
                     physical_condition = physicalState,
                     mental_condition = mentalState,
                     date = DateTime.Today,
                     recommendations = recommendation
                 };
 
-                // Добавляем запись в контекст и сохраняем изменения
                 context.user_conditions.Add(userCondition);
                 context.SaveChanges();
 
@@ -86,14 +74,28 @@ namespace Kursach.User
             }
         }
 
-        // Метод для загрузки истории состояний из базы данных
         private void LoadStateHistory()
         {
             try
             {
+                if (!CurrentUser.Instance.IsAuthenticated())
+                {
+                    MessageBox.Show("Пользователь не найден. Пожалуйста, войдите в систему.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                int userId = CurrentUser.Instance.User.UserId;
+
                 var stateHistory = context.user_conditions
-                    .Where(uc => uc.user_id == CurrentUser.User.UserId) // Используем текущего пользователя
+                    .Where(uc => uc.user_id == userId)
                     .OrderByDescending(uc => uc.date)
+                    .Select(uc => new UserState
+                    {
+                        Date = uc.date,
+                        PhysicalState = uc.physical_condition,
+                        MentalState = uc.mental_condition,
+                        Recommendations = uc.recommendations
+                    })
                     .ToList();
 
                 UserStateDataGrid.ItemsSource = stateHistory;
@@ -104,13 +106,6 @@ namespace Kursach.User
             }
         }
 
-        // Метод для обновления таблицы
-        private void RefreshStateHistoryButton_Click(object sender, RoutedEventArgs e)
-        {
-            LoadStateHistory();
-        }
-
-        // Метод для формирования рекомендации
         private string GetRecommendation(string physicalState, string mentalState)
         {
             string recommendation = "Рекомендация: ";
@@ -138,9 +133,20 @@ namespace Kursach.User
 
             return recommendation;
         }
+
+        private void EvaluateStateButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Логика для оценки состояния
+        }
+
+        private void RefreshStateHistoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadStateHistory(); // Перезагрузить историю состояний
+        }
+
+        // Другие методы остаются без изменений
     }
 
-    // Класс для представления состояния пользователя
     public class UserState
     {
         public DateTime Date { get; set; }

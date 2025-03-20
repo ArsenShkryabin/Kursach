@@ -6,7 +6,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="1000" d:DesignWidth="800"
       Title="Profile"
-      SizeChanged="Page_SizeChanged_1">
+      SizeChanged="Page_SizeChanged">
 
     <Grid>
         <Grid.Background>
@@ -31,16 +31,16 @@
                     Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="UploadImageButton_Click" />
 
             <TextBlock Text="Имя:" FontSize="14" />
-            <TextBox Name="FirstNameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="FirstNameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <TextBlock Text="Фамилия:" FontSize="14" />
-            <TextBox Name="LastNameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="LastNameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <TextBlock Text="Логин:" FontSize="14" />
-            <TextBox Name="UsernameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="UsernameTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <TextBlock Text="Электронная почта:" FontSize="14" />
-            <TextBox Name="EmailTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="EmailTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <Button Name="EditButton" Content="Редактировать" Width="400" Height="35"
                     Background="#FF4CAF50" Foreground="White" FontWeight="Bold" Click="EditButton_Click" />
@@ -53,10 +53,10 @@
                        HorizontalAlignment="Left" Foreground="#FF37474F" />
 
             <TextBlock Text="Рост (в см):" FontSize="14" />
-            <TextBox Name="HeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="HeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <TextBlock Text="Вес (в кг):" FontSize="14" />
-            <TextBox Name="WeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="True" />
+            <TextBox Name="WeightTextBox" Width="400" Height="30" Margin="0,0,0,10" IsReadOnly="False" />
 
             <Button Name="CalculateBMIButton" Content="Подсчитать ИМТ" Width="400" Height="35" 
                     Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="CalculateBMIButton_Click" Margin="0,5,0,10" />
@@ -79,7 +79,7 @@
                 Margin="0,5,0,5" />
 
                     <Button Name="MyHabitsButton" Content="Мои привычки" Width="180" Height="35"
-                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MyHabitsButton_Click" 
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MyHabitsButton_Click"
                 Margin="0,5,0,5" />
 
                     <Button Name="HistoryButton" Content="Вся история" Width="180" Height="35" 
@@ -87,7 +87,7 @@
                 Click="HistoryButton_Click" />
 
                     <Button Name="SleepTrackerButton" Content="Сон" Width="180" Height="35"
-                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepTrackerButton_Click" 
+                Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="SleepTrackerButton_Click"
                 Margin="0,5,0,5" />
 
                     <Button Name="NutritionTrackerButton" Content="Питание" Width="180" Height="35"
@@ -113,11 +113,11 @@
                         Margin="0,5,0,5" />
 
                     <Button Name="FitnessRecommendationsButton" Content="Рекомендации по фитнесу" Width="180" Height="35"
-                        Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="FitnessRecommendationsButton_Click" 
+                        Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="FitnessRecommendationsButton_Click"
                         Margin="0,5,0,5" />
 
                     <Button Name="MentalHealthRecommendationsButton" Content="Рекомендации по здоровью" Width="180" Height="35"
-                        Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MentalHealthRecommendationsButton_Click" 
+                        Background="#FF2196F3" Foreground="White" FontWeight="Bold" Click="MentalHealthRecommendationsButton_Click"
                         Margin="0,5,0,5" />
                 </StackPanel>
             </Expander>
