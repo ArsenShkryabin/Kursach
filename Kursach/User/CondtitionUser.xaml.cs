@@ -55,7 +55,7 @@ namespace Kursach.User
             {
                 var userCondition = new user_conditions
                 {
-                    user_id = CurrentUser.Instance.User.UserId,
+                    user_id = currentUserId, // Используем currentUserId вместо CurrentUser.Instance.User.UserId
                     physical_condition = physicalState,
                     mental_condition = mentalState,
                     date = DateTime.Today,
@@ -84,10 +84,9 @@ namespace Kursach.User
                     return;
                 }
 
-                int userId = CurrentUser.Instance.User.UserId;
-
+                // Используем currentUserId, чтобы загрузить только данные этого пользователя
                 var stateHistory = context.user_conditions
-                    .Where(uc => uc.user_id == userId)
+                    .Where(uc => uc.user_id == currentUserId) // Фильтруем по текущему пользователю
                     .OrderByDescending(uc => uc.date)
                     .Select(uc => new UserState
                     {
@@ -136,7 +135,121 @@ namespace Kursach.User
 
         private void EvaluateStateButton_Click(object sender, RoutedEventArgs e)
         {
-            // Логика для оценки состояния
+            try
+            {
+                // Получаем последние 5 записей о состоянии
+                var lastConditions = context.user_conditions
+                    .Where(uc => uc.user_id == currentUserId)
+                    .OrderByDescending(uc => uc.date)
+                    .Take(5)
+                    .ToList();
+
+                if (lastConditions.Count == 0)
+                {
+                    MessageBox.Show("История состояния пуста. Пожалуйста, сохраните свое состояние, чтобы оценить его.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
+                // Подсчитываем общее состояние и оценки
+                int physicalScore = 0;
+                int mentalScore = 0;
+
+                foreach (var condition in lastConditions)
+                {
+                    physicalScore += MapPhysicalStateToScore(condition.physical_condition);
+                    mentalScore += MapMentalStateToScore(condition.mental_condition);
+                }
+
+                int averagePhysical = physicalScore / lastConditions.Count;
+                int averageMental = mentalScore / lastConditions.Count;
+
+                string physicalRecommendation = GetPhysicalRecommendations(averagePhysical);
+                string mentalRecommendation = GetMentalRecommendations(averageMental);
+
+                MessageBox.Show($"Ваши последние состояния:\n" +
+                                $"Физическое состояние (средний балл): {averagePhysical}\n" +
+                                $"Психологическое состояние (средний балл): {averageMental}\n\n" +
+                                $"Рекомендации:\n{physicalRecommendation}\n{mentalRecommendation}",
+                                "Оценка состояния",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при оценке состояния: " + ex.Message);
+            }
+        }
+
+        // Метод для отображения физического состояния в баллы
+        private int MapPhysicalStateToScore(string physicalState)
+        {
+            switch (physicalState)
+            {
+                case "Отлично":
+                    return 4;
+                case "Хорошо":
+                    return 3;
+                case "Удовлетворительно":
+                    return 2;
+                case "Плохо":
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        // Метод для отображения психологического состояния в баллы
+        private int MapMentalStateToScore(string mentalState)
+        {
+            switch (mentalState)
+            {
+                case "Счастлив":
+                    return 4;
+                case "Спокойно":
+                    return 3;
+                case "Нормально":
+                    return 2;
+                case "Депрессия":
+                    return 1;
+                default:
+                    return 0;
+            }
+        }
+
+        // Метод для получения рекомендаций по физическому состоянию
+        private string GetPhysicalRecommendations(int averageScore)
+        {
+            switch (averageScore)
+            {
+                case 4:
+                    return "Отлично! Продолжайте заботиться о своем физическом состоянии. Поддерживайте активный образ жизни.";
+                case 3:
+                    return "Хорошо! Продолжайте заниматься физической активностью и следите за своим здоровьем.";
+                case 2:
+                    return "Удовлетворительно. Рассмотрите возможность увеличения физической активности и улучшения режима питания.";
+                case 1:
+                    return "Плохо. Это тревожный сигнал. Вам следует обратиться к врачу и начать заниматься своим физическим состоянием.";
+                default:
+                    return "Неизвестное состояние. Пожалуйста, обратитесь к специалисту.";
+            }
+        }
+
+        // Метод для получения рекомендаций по психологическому состоянию
+        private string GetMentalRecommendations(int averageScore)
+        {
+            switch (averageScore)
+            {
+                case 4:
+                    return "Вы в прекрасном эмоциональном состоянии! Сохраните этот позитивный настрой.";
+                case 3:
+                    return "Хорошо! Продолжайте заниматься тем, что приносит вам радость, и старайтесь избегать стресса.";
+                case 2:
+                    return "Удовлетворительно. Возможно, стоит поговорить с близкими или специалистом о ваших переживаниях.";
+                case 1:
+                    return "Выделите время для самопомощи и подумайте о том, чтобы обратиться к психологу.";
+                default:
+                    return "Неизвестное состояние. Настоятельно рекомендуем обратиться за помощью к специалисту.";
+            }
         }
 
         private void RefreshStateHistoryButton_Click(object sender, RoutedEventArgs e)

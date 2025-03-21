@@ -18,12 +18,10 @@ namespace Kursach.User
         {
             InitializeComponent();
             context = new KursovayaEntities();
-
-            // Получаем пользователя по userId
-            var user = context.users.FirstOrDefault(u => u.user_id == userId);
+            currentUserId = userId;
 
             // Проверяем, существует ли пользователь
-            if (user == null)
+            if (!IsUserValid(currentUserId))
             {
                 MessageBox.Show("Пользователь не найден.");
                 NavigationService?.Navigate(new Login()); // Переходим на страницу авторизации
@@ -31,8 +29,12 @@ namespace Kursach.User
             }
 
             // Загружаем профиль
-            currentUserId = userId;
             LoadUserProfile();
+        }
+
+        private bool IsUserValid(int userId)
+        {
+            return context.users.Any(u => u.user_id == userId);
         }
 
         private void LoadUserProfile()
@@ -45,7 +47,11 @@ namespace Kursach.User
                 HeightTextBox.Text = user.height?.ToString() ?? "Не указано";
                 WeightTextBox.Text = user.weight?.ToString() ?? "Не указано";
 
-                // Устанавливаем изображение профиля, если путь к изображению задан
+                // Устанавливаем имя и фамилию
+                FirstNameTextBox.Text = user.first_name; // Добавьте это
+                LastNameTextBox.Text = user.last_name; // Добавьте это
+
+                // Устанавливаем изображение профиля
                 if (!string.IsNullOrEmpty(user.profile_image))
                 {
                     ProfileImage.Source = new BitmapImage(new Uri(user.profile_image));
@@ -61,29 +67,34 @@ namespace Kursach.User
             }
         }
 
+        // Остальные методы остаются без изменений...
+
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            if (EditButton.Content.ToString() == "Редактировать")
-            {
-                // Включаем редактирование текстовых полей
-                EnableEditing(true);
-                EditButton.Content = "Сохранить"; // Изменяем текст кнопки
-            }
-            else
-            {
-                // При повторном нажатии сохраняем изменения
-                EditProfile(); // Вызов метода для редактирования профиля
-                EnableEditing(false); // Отключаем редактирование текстовых полей
-                EditButton.Content = "Редактировать"; // Возвращаем текст кнопки
-            }
+            FirstNameTextBox.IsReadOnly = false;
+            LastNameTextBox.IsReadOnly = false;
+            HeightTextBox.IsReadOnly = false;
+            WeightTextBox.IsReadOnly = false;
+
+            // Изменим название кнопки на "Сохранить"
+            EditButton.Content = "Сохранить";
+            EditButton.Click -= EditButton_Click; // Удаляем текущий обработчик
+            EditButton.Click += SaveProfileButton_Click; // Добавляем новый обработчик
         }
 
-        private void EnableEditing(bool enable)
+        private void SaveProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            UsernameTextBox.IsEnabled = enable;
-            EmailTextBox.IsEnabled = enable;
-            HeightTextBox.IsEnabled = enable;
-            WeightTextBox.IsEnabled = enable;
+            EditProfile();
+            // Сделаем текстовые поля снова не редактируемыми
+            FirstNameTextBox.IsReadOnly = true;
+            LastNameTextBox.IsReadOnly = true;
+            HeightTextBox.IsReadOnly = true;
+            WeightTextBox.IsReadOnly = true;
+
+            // Вернем название кнопки на "Редактировать"
+            EditButton.Content = "Редактировать";
+            EditButton.Click -= SaveProfileButton_Click; // Удаляем текущий обработчик
+            EditButton.Click += EditButton_Click; // Возвращаем оригинальный обработчик
         }
 
         private void EditProfile()
@@ -96,7 +107,6 @@ namespace Kursach.User
                 user.last_name = LastNameTextBox.Text;
                 user.email = EmailTextBox.Text;
 
-                // Явное преобразование типа double в decimal
                 if (double.TryParse(HeightTextBox.Text, out double height))
                 {
                     user.height = Convert.ToDecimal(height);
@@ -109,7 +119,7 @@ namespace Kursach.User
 
                 try
                 {
-                    context.SaveChanges(); // Сохраняем изменения
+                    context.SaveChanges(); // Сохраняем изменения в базе данных
                     MessageBox.Show("Профиль успешно обновлен.");
                 }
                 catch (Exception ex)
@@ -122,8 +132,6 @@ namespace Kursach.User
                 MessageBox.Show("Пользователь не найден.");
             }
         }
-
-        // Остальные методы...
 
         private void CalculateBMIButton_Click(object sender, RoutedEventArgs e)
         {
@@ -195,12 +203,9 @@ namespace Kursach.User
 
         private void UserStateButton_Click(object sender, RoutedEventArgs e)
         {
-            int userId = App.CurrentUser.user_id; // Получение идентификатора текущего пользователя
-            CondtitionUser condtitionUser = new CondtitionUser(userId); // Передаем userId в конструктор
-            NavigationService?.Navigate(new CondtitionUser(currentUserId));
+            CondtitionUser condtitionUser = new CondtitionUser(currentUserId);
+            NavigationService?.Navigate(condtitionUser);
         }
-
-        // Дополнительные методы для других кнопок могут быть добавлены аналогичным образом...
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -234,9 +239,8 @@ namespace Kursach.User
 
         private void SleepTrackerButton_Click(object sender, RoutedEventArgs e)
         {
-            int userId = App.CurrentUser.user_id; // Получение идентификатора текущего пользователя
-            SleepTrackerPage sleepTrackerPage = new SleepTrackerPage(userId); // Передаем userId в конструктор
-            NavigationService?.Navigate(new SleepTrackerPage(currentUserId));
+            SleepTrackerPage sleepTrackerPage = new SleepTrackerPage(currentUserId);
+            NavigationService?.Navigate(sleepTrackerPage);
         }
     }
 }

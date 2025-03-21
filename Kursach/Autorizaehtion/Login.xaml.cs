@@ -31,7 +31,7 @@ namespace Kursach.Autorizaehtion
             string password = PasswordBox.Password;
 
             //Убираем проверку на пустые поля
-             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
                 ErrorMessageTextBlock.Text = "Пожалуйста, введите логин и пароль.";
                 return;
